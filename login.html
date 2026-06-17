@@ -98,10 +98,81 @@
             background: #fff;
             color: #000;
         }
-        .btn-google:hover { border-color: #000; }
+        .auth-preferences {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        @media(max-width: 480px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+                align-items: flex-start;
+                padding: 4.5rem 1rem 2rem 1rem;
+            }
+            .auth-card {
+                max-height: none;
+            }
+            .auth-preferences {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+        .password-toggle:hover {
+            color: var(--color-primary);
+        }
+        .password-wrapper .form-control {
+            padding-right: 2.75rem;
+        }
+        [dir="rtl"] .password-toggle {
+            right: auto;
+            left: 1rem;
+        }
+        [dir="rtl"] .password-wrapper .form-control {
+            padding-right: 1rem;
+            padding-left: 2.75rem;
+        }
+        .auth-card a.text-secondary {
+            transition: var(--transition);
+        }
+        .auth-card a.text-secondary:hover {
+            color: var(--color-primary);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+
+    <div class="auth-preferences">
+        <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i></button>
+        <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i class="ph ph-arrows-left-right"></i></button>
+    </div>
 
     <svg class="watermark" viewBox="0 0 100 100" fill="none" stroke="var(--color-primary)" stroke-width="0.5">
         <circle cx="50" cy="50" r="40"/>
@@ -110,14 +181,25 @@
     </svg>
 
     <div class="auth-card fade-in-up">
-        <div class="auth-logo">Battle<span>Grid</span></div>
+        <a href="index.html" class="auth-logo">Battle<span>Grid</span></a>
         
         <form action="dashboard.html" data-validate="true">
             <div class="form-group" style="margin-bottom: 1rem;">
                 <input type="email" class="form-control" placeholder="Email Address" required>
             </div>
-            <div class="form-group" style="margin-bottom: 2rem;">
+            <div class="form-group password-wrapper" style="margin-bottom: 1.25rem;">
                 <input type="password" class="form-control" placeholder="Password" required>
+                <button type="button" class="password-toggle" aria-label="Toggle Password Visibility">
+                    <i class="ph ph-eye"></i>
+                </button>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; font-size: 0.85rem;">
+                <label style="display: flex; gap: 0.5rem; align-items: center; cursor: pointer;">
+                    <input type="checkbox" name="remember" style="margin-top: 0.1rem;">
+                    <span style="color: var(--color-text-muted);">Remember Me</span>
+                </label>
+                <a href="#" class="text-secondary">Forgot Password?</a>
             </div>
             
             <button type="submit" class="btn btn-primary btn-full">LOGIN TO BASE CAMP</button>
@@ -136,7 +218,7 @@
         </button>
         
         <button class="btn-social">
-            <i class="ph ph-envelope"></i> Continue with Email
+            <i class="ph ph-apple-logo"></i> Continue with Apple
         </button>
 
         <div style="margin-top: 2rem;">
@@ -145,5 +227,20 @@
     </div>
 
     <script src="assets/js/main.js"></script>
+    <script>
+        document.querySelectorAll('.password-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const input = button.parentElement.querySelector('input');
+                const icon = button.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.className = 'ph ph-eye-slash';
+                } else {
+                    input.type = 'password';
+                    icon.className = 'ph ph-eye';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

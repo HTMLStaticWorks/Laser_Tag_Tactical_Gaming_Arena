@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,12 @@
     <link rel="stylesheet" href="assets/css/rtl.css">
     <!-- GA_TAG: replace with Google Analytics script -->
     <style>
-        body { background-color: var(--color-bg); margin: 0; padding: 0; overflow-x: hidden; }
+        body {
+            background-color: var(--color-bg);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
         .dashboard-layout {
             display: flex;
@@ -27,15 +33,18 @@
             display: flex;
             flex-direction: column;
             position: fixed;
-            top: 0; bottom: 0; left: 0;
+            top: 0;
+            bottom: 0;
+            left: 0;
             z-index: 100;
             transition: transform 0.3s ease;
         }
-        
+
         .sidebar-header {
             padding: 2rem 1.5rem;
             border-bottom: 1px solid var(--color-border);
         }
+
         .sidebar-logo {
             font-family: var(--font-heading);
             font-size: 1.5rem;
@@ -43,13 +52,17 @@
             color: var(--color-text);
             text-transform: uppercase;
         }
-        .sidebar-logo span { color: var(--color-primary); }
+
+        .sidebar-logo span {
+            color: var(--color-primary);
+        }
 
         .sidebar-nav {
             flex-grow: 1;
             padding: 1.5rem 0;
             overflow-y: auto;
         }
+
         .sidebar-link {
             display: flex;
             align-items: center;
@@ -61,16 +74,21 @@
             border-left: 3px solid transparent;
             font-size: 1rem;
         }
+
         .sidebar-link:hover {
             background: rgba(255, 59, 59, 0.05);
             color: var(--color-primary);
         }
+
         .sidebar-link.active {
             background: rgba(255, 59, 59, 0.1);
             color: var(--color-primary);
             border-left-color: var(--color-primary);
         }
-        .sidebar-link i { font-size: 1.25rem; }
+
+        .sidebar-link i {
+            font-size: 1.25rem;
+        }
 
         .notif-badge {
             background: var(--color-primary);
@@ -93,19 +111,26 @@
             padding: 2rem;
             min-height: 100vh;
         }
-        
+
         /* Mobile Overlay */
         .sidebar-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
             z-index: 90;
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
         }
-        .sidebar-overlay.active { opacity: 1; visibility: visible; }
-        
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Mobile Header */
         .mobile-top-bar {
             display: none;
@@ -118,22 +143,99 @@
             top: 0;
             z-index: 80;
         }
+
         .sidebar-toggle {
-            background: none; border: none; color: var(--color-text); font-size: 1.5rem; cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         @media(max-width: 1024px) {
-            .dashboard-sidebar { transform: translateX(-100%); }
-            .dashboard-sidebar.open { transform: translateX(0); }
-            .dashboard-main { margin-left: 0; padding: 1rem; }
-            .mobile-top-bar { display: flex; }
+            .dashboard-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .dashboard-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .dashboard-main {
+                margin-left: 0;
+                padding: 1rem;
+                min-width: 0;
+            }
+
+            .mobile-top-bar {
+                display: flex;
+            }
+        }
+
+        .wizard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media(max-width: 768px) {
+            #tab-bookings .dash-table-wrapper,
+            #tab-stats .dash-table-wrapper {
+                overflow-x: scroll;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #tab-bookings .dash-table-wrapper::-webkit-scrollbar,
+            #tab-stats .dash-table-wrapper::-webkit-scrollbar {
+                height: 8px;
+                display: block;
+            }
+
+            #tab-bookings .dash-table-wrapper::-webkit-scrollbar-track,
+            #tab-stats .dash-table-wrapper::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.2);
+                border-top: 1px solid var(--color-border);
+            }
+
+            #tab-bookings .dash-table-wrapper::-webkit-scrollbar-thumb,
+            #tab-stats .dash-table-wrapper::-webkit-scrollbar-thumb {
+                background-color: var(--color-primary);
+                border-radius: 4px;
+            }
+
+            #tab-bookings .dash-table,
+            #tab-stats .dash-table {
+                min-width: 600px;
+            }
+
+            .wizard-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* TAB SYSTEM */
-        .tab-pane { display: none; animation: fadeIn 0.4s ease; }
-        .tab-pane.active { display: block; }
-        @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-        
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .tab-header {
             margin-bottom: 2rem;
             padding-bottom: 1rem;
@@ -144,7 +246,11 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-        .tab-header h2 { margin: 0; color: var(--color-primary); }
+
+        .tab-header h2 {
+            margin: 0;
+            color: var(--color-primary);
+        }
 
         /* DASHBOARD CARDS */
         .kpi-grid {
@@ -153,15 +259,30 @@
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
+
         .kpi-card {
             background: var(--color-surface);
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
             padding: 1.5rem;
         }
-        .kpi-title { font-size: 0.85rem; color: var(--color-text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
-        .kpi-value { font-family: var(--font-heading); font-size: 2rem; color: var(--color-text); }
-        .kpi-value.accent { color: var(--color-accent); }
+
+        .kpi-title {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-value {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-text);
+        }
+
+        .kpi-value.accent {
+            color: var(--color-accent);
+        }
 
         /* TABLES */
         .dash-table-wrapper {
@@ -169,17 +290,58 @@
             border: 1px solid var(--color-border);
             border-radius: var(--radius);
             overflow-x: auto;
+            width: 100%;
         }
-        .dash-table { width: 100%; border-collapse: collapse; text-align: left; }
-        .dash-table th, .dash-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--color-border); }
-        .dash-table th { font-family: var(--font-heading); text-transform: uppercase; color: var(--color-text-muted); font-weight: normal; }
-        .dash-table tr:last-child td { border-bottom: none; }
-        
+
+        .dash-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .dash-table th,
+        .dash-table td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .dash-table th {
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            font-weight: normal;
+        }
+
+        .dash-table tr:last-child td {
+            border-bottom: none;
+        }
+
         /* STATUS BADGES */
-        .badge { padding: 0.25rem 0.75rem; border-radius: 2px; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
-        .badge-success { background: rgba(0,255,178,0.1); color: var(--color-secondary); border: 1px solid var(--color-secondary); }
-        .badge-warning { background: rgba(255,214,0,0.1); color: var(--color-accent); border: 1px solid var(--color-accent); }
-        .badge-danger { background: rgba(255,59,59,0.1); color: var(--color-primary); border: 1px solid var(--color-primary); }
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: rgba(0, 255, 178, 0.1);
+            color: var(--color-secondary);
+            border: 1px solid var(--color-secondary);
+        }
+
+        .badge-warning {
+            background: rgba(255, 214, 0, 0.1);
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+        }
+
+        .badge-danger {
+            background: rgba(255, 59, 59, 0.1);
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+        }
 
         /* PASS TIERS */
         .pass-grid {
@@ -187,6 +349,7 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
         }
+
         .pass-card {
             background: var(--color-bg);
             border: 1px solid var(--color-border);
@@ -194,26 +357,73 @@
             text-align: center;
             position: relative;
         }
-        .pass-popular { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); background: var(--color-accent); color: #000; padding: 0.2rem 1rem; font-size: 0.8rem; font-weight: bold; }
+
+        .pass-popular {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--color-accent);
+            color: #000;
+            padding: 0.2rem 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
 
         /* RANK BAR */
-        .rank-container { background: var(--color-surface); padding: 2rem; border: 1px solid var(--color-border); margin-bottom: 2rem; }
-        .rank-bar-bg { width: 100%; height: 8px; background: var(--color-border); border-radius: 4px; overflow: hidden; margin: 1rem 0; }
-        .rank-bar-fill { height: 100%; background: var(--color-primary); width: 68%; }
+        .rank-container {
+            background: var(--color-surface);
+            padding: 2rem;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+        }
+
+        .rank-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: var(--color-border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .rank-bar-fill {
+            height: 100%;
+            background: var(--color-primary);
+            width: 68%;
+        }
 
         /* NOTIFICATIONS */
         .notif-item {
-            display: flex; gap: 1.5rem; padding: 1.5rem; background: var(--color-surface); border: 1px solid var(--color-border); margin-bottom: 1rem; cursor: pointer; transition: var(--transition);
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        .notif-item:hover { border-color: var(--color-primary); }
-        .notif-item.read { opacity: 0.6; border-color: var(--color-border); }
-        .notif-icon { font-size: 2rem; }
+
+        .notif-item:hover {
+            border-color: var(--color-primary);
+        }
+
+        .notif-item.read {
+            opacity: 0.6;
+            border-color: var(--color-border);
+        }
+
+        .notif-icon {
+            font-size: 2rem;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="dashboard-layout">
-        
+
         <!-- Mobile Overlay -->
         <div class="sidebar-overlay"></div>
 
@@ -222,37 +432,58 @@
             <div class="sidebar-header">
                 <a href="index.html" class="sidebar-logo">Battle<span>Grid</span></a>
             </div>
-            
+
             <nav class="sidebar-nav">
-                <a href="#" class="sidebar-link active" data-tab="tab-overview"><i class="ph ph-squares-four"></i> Overview</a>
-                <a href="#" class="sidebar-link" data-tab="tab-bookings"><i class="ph ph-calendar-check"></i> My Bookings</a>
+                <a href="#" class="sidebar-link active" data-tab="tab-overview"><i class="ph ph-squares-four"></i>
+                    Overview</a>
+                <a href="#" class="sidebar-link" data-tab="tab-bookings"><i class="ph ph-calendar-check"></i> My
+                    Bookings</a>
                 <a href="#" class="sidebar-link" data-tab="tab-passes"><i class="ph ph-ticket"></i> Buy Jump Pass</a>
                 <a href="#" class="sidebar-link" data-tab="tab-waiver"><i class="ph ph-pen-nib"></i> Sign Waiver</a>
                 <a href="#" class="sidebar-link" data-tab="tab-package"><i class="ph ph-cake"></i> Book a Package</a>
                 <a href="#" class="sidebar-link" data-tab="tab-stats"><i class="ph ph-trophy"></i> My Stats & Rank</a>
-                <a href="#" class="sidebar-link" data-tab="tab-notifs"><i class="ph ph-bell"></i> Notifications <span class="notif-badge">3</span></a>
+                <a href="#" class="sidebar-link" data-tab="tab-notifs"><i class="ph ph-bell"></i> Notifications <span
+                        class="notif-badge">3</span></a>
                 <a href="#" class="sidebar-link" data-tab="tab-settings"><i class="ph ph-gear"></i> Profile Settings</a>
             </nav>
 
             <div class="sidebar-footer">
-                <a href="login.html" class="sidebar-link" style="padding:0; color:var(--color-text-muted);"><i class="ph ph-sign-out"></i> Logout</a>
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border);">
+                    <span
+                        style="font-size: 0.85rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-heading);">Preferences</span>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i
+                                class="ph ph-sun"></i></button>
+                        <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i
+                                class="ph ph-arrows-left-right"></i></button>
+                    </div>
+                </div>
+                <a href="index.html" class="sidebar-link" style="padding:0; color:var(--color-text-muted);"><i
+                        class="ph ph-sign-out"></i> Logout</a>
             </div>
         </aside>
 
         <!-- MAIN AREA -->
         <main class="dashboard-main">
-            
+
             <!-- Mobile Top Bar -->
             <div class="mobile-top-bar">
-                <a href="index.html" class="sidebar-logo" style="font-size: 1.25rem;">Battle<span>Grid</span></a>
                 <button class="sidebar-toggle"><i class="ph ph-list"></i></button>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i></button>
+                    <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i
+                            class="ph ph-arrows-left-right"></i></button>
+                </div>
             </div>
 
             <!-- TAB 1: OVERVIEW -->
             <div id="tab-overview" class="tab-pane active">
-                <div style="background: linear-gradient(90deg, var(--color-surface), rgba(255, 59, 59, 0.1)); border-left: 4px solid var(--color-primary); padding: 2rem; margin-bottom: 2rem;">
+                <div
+                    style="background: linear-gradient(90deg, var(--color-surface), rgba(255, 59, 59, 0.1)); border-left: 4px solid var(--color-primary); padding: 2rem; margin-bottom: 2rem;">
                     <h2 style="margin: 0; color: var(--color-text); font-size: 2rem;">WELCOME BACK, J.SMITH</h2>
-                    <p style="color: var(--color-text-muted); margin: 0.5rem 0 0 0;">RANK: <span style="color: var(--color-accent); font-weight: bold;">ELITE</span></p>
+                    <p style="color: var(--color-text-muted); margin: 0.5rem 0 0 0;">RANK: <span
+                            style="color: var(--color-accent); font-weight: bold;">ELITE</span></p>
                 </div>
 
                 <div class="kpi-grid">
@@ -275,10 +506,13 @@
                 </div>
 
                 <div style="display: flex; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap;">
-                    <button class="btn btn-primary" onclick="document.querySelector('[data-tab=\'tab-passes\']').click()">Buy a Pass</button>
+                    <button class="btn btn-primary"
+                        onclick="document.querySelector('[data-tab=\'tab-passes\']').click()">Buy a Pass</button>
                     <a href="book.html" class="btn btn-outline">Book a Session</a>
-                    <button class="btn btn-outline" style="border-color: var(--color-text-muted); color: var(--color-text-muted);" onclick="document.querySelector('[data-tab=\'tab-waiver\']').click()">View Waiver</button>
-                    
+                    <button class="btn btn-outline"
+                        style="border-color: var(--color-text-muted); color: var(--color-text-muted);"
+                        onclick="document.querySelector('[data-tab=\'tab-waiver\']').click()">View Waiver</button>
+
                     <div style="margin-left: auto; display: flex; align-items: center; gap: 1rem;">
                         <span style="font-size: 0.85rem; color: var(--color-text-muted);">Waiver Status:</span>
                         <span id="overview-waiver-badge" class="badge badge-warning">⚠ Action Required</span>
@@ -286,9 +520,12 @@
                 </div>
 
                 <div class="dash-table-wrapper">
-                    <div style="padding: 1.5rem; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between;">
-                        <h3 style="margin:0;"><i class="ph ph-crosshair text-primary"></i> Local Leaderboard (Top 5)</h3>
-                        <a href="#" onclick="document.querySelector('[data-tab=\'tab-stats\']').click()" style="color: var(--color-secondary); font-size: 0.85rem;">Full Stats &rarr;</a>
+                    <div
+                        style="padding: 1.5rem; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between;">
+                        <h3 style="margin:0;"><i class="ph ph-crosshair text-primary"></i> Local Leaderboard (Top 5)
+                        </h3>
+                        <a href="#" onclick="document.querySelector('[data-tab=\'tab-stats\']').click()"
+                            style="color: var(--color-secondary); font-size: 0.85rem;">Full Stats &rarr;</a>
                     </div>
                     <table class="dash-table">
                         <tr>
@@ -330,18 +567,25 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Oct 28, 2025 <br><span style="font-size:0.8rem; color:var(--color-text-muted);">18:45</span></td>
+                                <td>Oct 28, 2025 <br><span
+                                        style="font-size:0.8rem; color:var(--color-text-muted);">18:45</span></td>
                                 <td>Standard Combat</td>
                                 <td>4 Players</td>
                                 <td><span class="badge badge-success">Confirmed</span></td>
-                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-color: var(--color-primary); color: var(--color-primary);" onclick="confirm('Cancel booking BG-123456? This cannot be undone.')">Cancel</button></td>
+                                <td><button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"
+                                        onclick="confirm('Cancel booking BG-123456? This cannot be undone.')">Cancel</button>
+                                </td>
                             </tr>
                             <tr>
-                                <td>Oct 15, 2025 <br><span style="font-size:0.8rem; color:var(--color-text-muted);">20:00</span></td>
+                                <td>Oct 15, 2025 <br><span
+                                        style="font-size:0.8rem; color:var(--color-text-muted);">20:00</span></td>
                                 <td>Team Deathmatch</td>
                                 <td>8 Players</td>
-                                <td><span class="badge" style="background: var(--color-bg); border: 1px solid var(--color-border); color: var(--color-text-muted);">Completed</span></td>
-                                <td><a href="book.html" class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Book Again</a></td>
+                                <td><span class="badge"
+                                        style="background: var(--color-bg); border: 1px solid var(--color-border); color: var(--color-text-muted);">Completed</span>
+                                </td>
+                                <td><a href="book.html" class="btn btn-outline"
+                                        style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Book Again</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -357,9 +601,12 @@
                 <div class="pass-grid" style="margin-bottom: 4rem;">
                     <!-- Tier 1 -->
                     <div class="pass-card">
-                        <h3>Single Drop</h3>
-                        <p style="font-size: 2rem; color: var(--color-primary); font-family: var(--font-heading); margin: 1rem 0;">$30</p>
-                        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">1 Session • Valid 30 Days</p>
+                        <h3>Single Person</h3>
+                        <p
+                            style="font-size: 2rem; color: var(--color-primary); font-family: var(--font-heading); margin: 1rem 0;">
+                            $30</p>
+                        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">1 Session •
+                            Valid 30 Days</p>
                         <!-- STRIPE: replace with Stripe button -->
                         <button class="btn btn-outline btn-full">Purchase</button>
                     </div>
@@ -367,8 +614,11 @@
                     <div class="pass-card" style="border-color: var(--color-accent);">
                         <div class="pass-popular">MOST POPULAR</div>
                         <h3>5-Pack Squad</h3>
-                        <p style="font-size: 2rem; color: var(--color-primary); font-family: var(--font-heading); margin: 1rem 0;">$125</p>
-                        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">5 Sessions • Valid 90 Days • Save $25</p>
+                        <p
+                            style="font-size: 2rem; color: var(--color-primary); font-family: var(--font-heading); margin: 1rem 0;">
+                            $125</p>
+                        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">5 Sessions •
+                            Valid 90 Days </p>
                         <!-- STRIPE: replace with Stripe button -->
                         <button class="btn btn-primary btn-full">Purchase</button>
                     </div>
@@ -376,16 +626,22 @@
                     <div class="pass-card">
                         <div class="pass-popular" style="background: var(--color-secondary);">BEST VALUE</div>
                         <h3>10-Pack Elite</h3>
-                        <p style="font-size: 2rem; color: var(--color-primary); font-family: var(--font-heading); margin: 1rem 0;">$220</p>
-                        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">10 Sessions • Valid 6 Months • Save $80</p>
+                        <p
+                            style="font-size: 2rem; color: var(--color-primary); font-family: var(--font-heading); margin: 1rem 0;">
+                            $220</p>
+                        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">10 Sessions
+                            • Valid 6 Months </p>
                         <!-- STRIPE: replace with Stripe button -->
                         <button class="btn btn-outline btn-full">Purchase</button>
                     </div>
                     <!-- Tier 4 -->
                     <div class="pass-card">
                         <h3>Monthly Unlimited</h3>
-                        <p style="font-size: 2rem; color: var(--color-primary); font-family: var(--font-heading); margin: 1rem 0;">$150<span style="font-size:1rem;">/mo</span></p>
-                        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">Unlimited Sessions • Auto-renews</p>
+                        <p
+                            style="font-size: 2rem; color: var(--color-primary); font-family: var(--font-heading); margin: 1rem 0;">
+                            $150<span style="font-size:1rem;">/mo</span></p>
+                        <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 2rem;">Unlimited
+                            Sessions •</p>
                         <!-- STRIPE: replace with Stripe button -->
                         <button class="btn btn-outline btn-full">Subscribe</button>
                     </div>
@@ -393,10 +649,12 @@
 
                 <div style="background: var(--color-surface); padding: 2rem; border: 1px solid var(--color-border);">
                     <h3 style="margin-bottom: 1rem;">Active Passes</h3>
-                    <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--color-border); padding-bottom: 1rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; border-bottom: 1px dashed var(--color-border); padding-bottom: 1rem;">
                         <div>
                             <strong>5-Pack Squad</strong><br>
-                            <span style="font-size: 0.85rem; color: var(--color-text-muted);">Expires: Dec 31, 2025</span>
+                            <span style="font-size: 0.85rem; color: var(--color-text-muted);">Expires: Dec 31,
+                                2025</span>
                         </div>
                         <div style="text-align: right;">
                             <strong style="color: var(--color-secondary); font-size: 1.5rem;">2</strong><br>
@@ -412,18 +670,24 @@
                     <h2>DIGITAL WAIVER</h2>
                 </div>
 
-                <div id="waiver-form-container" style="max-width: 800px; background: var(--color-surface); padding: 3rem; border: 1px solid var(--color-border);">
+                <div id="waiver-form-container"
+                    style="max-width: 800px; background: var(--color-surface); padding: 3rem; border: 1px solid var(--color-border);">
                     <div id="waiver-signed-status" style="display: none; text-align: center;">
-                        <i class="ph-fill ph-check-circle" style="font-size: 4rem; color: var(--color-secondary); margin-bottom: 1rem;"></i>
+                        <i class="ph-fill ph-check-circle"
+                            style="font-size: 4rem; color: var(--color-secondary); margin-bottom: 1rem;"></i>
                         <h3 style="color: var(--color-secondary);">WAIVER SIGNED AND ACTIVE</h3>
-                        <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Your liability waiver is on file and valid.</p>
-                        <button class="btn btn-outline" onclick="localStorage.removeItem('waiverSigned'); window.location.reload();">Re-Sign Document</button>
+                        <p style="color: var(--color-text-muted); margin-bottom: 2rem;">Your liability waiver is on file
+                            and valid.</p>
+                        <button class="btn btn-outline"
+                            onclick="localStorage.removeItem('waiverSigned'); window.location.reload();">Re-Sign
+                            Document</button>
                     </div>
 
                     <form id="waiver-form">
-                        <p style="color: var(--color-text-muted); margin-bottom: 2rem;">All combatants must complete this liability release before entering the grid.</p>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <p style="color: var(--color-text-muted); margin-bottom: 2rem;">All combatants must complete
+                            this liability release before entering the grid.</p>
+
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
                             <div class="form-group" style="margin: 0;">
                                 <label class="form-label">Full Legal Name *</label>
                                 <input type="text" class="form-control" required>
@@ -442,12 +706,20 @@
                             </div>
                         </div>
 
-                        <div style="background: var(--color-bg); padding: 1.5rem; border: 1px solid var(--color-border); height: 200px; overflow-y: auto; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--color-text-muted);">
+                        <div
+                            style="background: var(--color-bg); padding: 1.5rem; border: 1px solid var(--color-border); height: 200px; overflow-y: auto; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--color-text-muted);">
                             <p><strong>RELEASE OF LIABILITY AND ASSUMPTION OF RISK</strong></p>
-                            <p>In consideration of being permitted to participate in laser tag and related activities at BattleGrid, I hereby acknowledge and agree to the following:</p>
-                            <p>1. I understand that laser tag involves physical activity, including walking, moving through dimly lit areas, navigating obstacles, and reacting to other players, which carries inherent risks of injury, including but not limited to slips, trips, falls, and collisions.</p>
-                            <p>2. I agree to follow all safety rules, protocols, and instructions provided by the Arena Commander and staff at all times.</p>
-                            <p>3. I knowingly and freely assume all such risks, both known and unknown, even if arising from the negligence of the releasees or others, and assume full responsibility for my participation.</p>
+                            <p>In consideration of being permitted to participate in laser tag and related activities at
+                                BattleGrid, I hereby acknowledge and agree to the following:</p>
+                            <p>1. I understand that laser tag involves physical activity, including walking, moving
+                                through dimly lit areas, navigating obstacles, and reacting to other players, which
+                                carries inherent risks of injury, including but not limited to slips, trips, falls, and
+                                collisions.</p>
+                            <p>2. I agree to follow all safety rules, protocols, and instructions provided by the Arena
+                                Commander and staff at all times.</p>
+                            <p>3. I knowingly and freely assume all such risks, both known and unknown, even if arising
+                                from the negligence of the releasees or others, and assume full responsibility for my
+                                participation.</p>
                         </div>
 
                         <div class="form-group">
@@ -457,7 +729,8 @@
 
                         <label style="display: flex; gap: 0.75rem; margin-bottom: 2rem; cursor: pointer;">
                             <input type="checkbox" required style="margin-top: 0.25rem;">
-                            <span style="font-size: 0.85rem;">I have read, understood, and agree to the terms of the Release of Liability above.</span>
+                            <span style="font-size: 0.85rem;">I have read, understood, and agree to the terms of the
+                                Release of Liability above.</span>
                         </label>
 
                         <button type="submit" class="btn btn-primary">SIGN & SUBMIT</button>
@@ -471,46 +744,62 @@
                     <h2>SQUAD PACKAGE DEPLOYMENT</h2>
                 </div>
 
-                <div id="package-wizard" style="background: var(--color-surface); padding: 3rem; border: 1px solid var(--color-border); max-width: 900px;">
+                <div id="package-wizard"
+                    style="background: var(--color-surface); padding: 3rem; border: 1px solid var(--color-border); max-width: 900px;">
                     <!-- This utilizes the logic built in dashboard.js -->
-                    
+
                     <div class="step-content active wizard-step">
                         <h3 style="margin-bottom: 1.5rem;">STEP 1: CHOOSE PACKAGE</h3>
                         <div style="display: grid; gap: 1rem; margin-bottom: 2rem;">
-                            <label style="border: 1px solid var(--color-border); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
+                            <label
+                                style="border: 1px solid var(--color-border); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
                                 <input type="radio" name="pkg_select" checked>
                                 <div>
-                                    <strong style="color: var(--color-primary); font-size: 1.25rem;">Birthday Blitz ($250)</strong>
-                                    <p style="margin: 0; font-size: 0.85rem; color: var(--color-text-muted);">10 Players, 2 Matches, Party Room</p>
+                                    <strong style="color: var(--color-primary); font-size: 1.25rem;">Birthday Blitz
+                                        ($250)</strong>
+                                    <p style="margin: 0; font-size: 0.85rem; color: var(--color-text-muted);">10
+                                        Players, 2 Matches, Party Room</p>
                                 </div>
                             </label>
-                            <label style="border: 1px solid var(--color-border); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
+                            <label
+                                style="border: 1px solid var(--color-border); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
                                 <input type="radio" name="pkg_select">
                                 <div>
-                                    <strong style="color: var(--color-primary); font-size: 1.25rem;">Corporate Assault ($450)</strong>
-                                    <p style="margin: 0; font-size: 0.85rem; color: var(--color-text-muted);">20 Players, Arena Lockout, Custom Modes</p>
+                                    <strong style="color: var(--color-primary); font-size: 1.25rem;">Corporate Assault
+                                        ($450)</strong>
+                                    <p style="margin: 0; font-size: 0.85rem; color: var(--color-text-muted);">20
+                                        Players, Arena Lockout, Custom Modes</p>
                                 </div>
                             </label>
                         </div>
-                        <button type="button" class="btn btn-primary btn-next">Next Step &rarr;</button>
+                        <div style="display: flex; justify-content: center; margin-top: 2rem;">
+                            <button type="button" class="btn btn-primary btn-next">Next Step &rarr;</button>
+                        </div>
                     </div>
 
                     <div class="step-content wizard-step" style="display: none;">
                         <h3 style="margin-bottom: 1.5rem;">STEP 2: LOGISTICS & ADD-ONS</h3>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                        <div class="wizard-grid">
                             <div>
-                                <div class="form-group"><label class="form-label">Date</label><input type="date" class="form-control"></div>
-                                <div class="form-group"><label class="form-label">Time</label><input type="time" class="form-control"></div>
-                                <div class="form-group"><label class="form-label">Total Headcount</label><input type="number" class="form-control" value="10"></div>
+                                <div class="form-group"><label class="form-label">Date</label><input type="date"
+                                        class="form-control"></div>
+                                <div class="form-group"><label class="form-label">Time</label><input type="time"
+                                        class="form-control"></div>
+                                <div class="form-group"><label class="form-label">Total Headcount</label><input
+                                        type="number" class="form-control" value="10"></div>
                             </div>
-                            <div style="background: var(--color-bg); padding: 1.5rem; border: 1px solid var(--color-border);">
+                            <div
+                                style="background: var(--color-bg); padding: 1.5rem; border: 1px solid var(--color-border);">
                                 <h4>Add-ons</h4>
-                                <label style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;"><input type="checkbox"> Dedicated Photographer ($50)</label>
-                                <label style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;"><input type="checkbox"> Custom Dog Tags ($3/ea)</label>
-                                <label style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;"><input type="checkbox"> Pizza Catering ($40)</label>
+                                <label style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;"><input
+                                        type="checkbox"> Dedicated Photographer ($50)</label>
+                                <label style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;"><input
+                                        type="checkbox"> Custom Dog Tags ($3/ea)</label>
+                                <label style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;"><input
+                                        type="checkbox"> Pizza Catering ($40)</label>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 1rem;">
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
                             <button type="button" class="btn btn-outline btn-prev">&larr; Back</button>
                             <button type="button" class="btn btn-primary btn-next">Review & Confirm &rarr;</button>
                         </div>
@@ -519,20 +808,24 @@
                     <div class="step-content wizard-step" style="display: none;">
                         <form>
                             <h3 style="margin-bottom: 1.5rem;">STEP 3: SECURE DEPLOYMENT</h3>
-                            <p style="margin-bottom: 2rem; color: var(--color-text-muted);">Please review your package. A member of our events team will contact you to finalize catering and custom modes.</p>
-                            
-                            <div style="background: var(--color-bg); padding: 1.5rem; border: 1px solid var(--color-primary); margin-bottom: 2rem;">
+                            <p style="margin-bottom: 2rem; color: var(--color-text-muted);">Please review your package.
+                                A member of our events team will contact you to finalize catering and custom modes.</p>
+
+                            <div
+                                style="background: var(--color-bg); padding: 1.5rem; border: 1px solid var(--color-primary); margin-bottom: 2rem;">
                                 <h4 style="color: var(--color-primary);">Summary</h4>
                                 <p><strong>Birthday Blitz</strong> - $250.00<br>
-                                <strong>Date/Time:</strong> Pending Confirmation</p>
+                                    <strong>Date/Time:</strong> Pending Confirmation
+                                </p>
                             </div>
 
-                            <div style="display: flex; gap: 1rem;">
+                            <div style="display: flex; gap: 1rem; justify-content: center;">
                                 <button type="button" class="btn btn-outline btn-prev">&larr; Back</button>
                                 <button type="submit" class="btn btn-primary">Submit Request</button>
                             </div>
                         </form>
-                        <div class="inline-success" style="display: none; padding: 2rem; text-align: center; border: 1px solid var(--color-secondary);">
+                        <div class="inline-success"
+                            style="display: none; padding: 2rem; text-align: center; border: 1px solid var(--color-secondary);">
                             <h3 style="color: var(--color-secondary);">PACKAGE REQUEST SECURED</h3>
                             <p>Our team will contact you within 24 hours.</p>
                             <p>REF: <span class="booking-ref">BG-000000</span></p>
@@ -550,9 +843,11 @@
 
                 <div class="rank-container">
                     <div style="display: flex; align-items: center; gap: 2rem;">
-                        <div style="width: 80px; height: 80px; background: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 2.5rem; color: #fff;">J</div>
+                        <div
+                            style="width: 80px; height: 80px; background: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 2.5rem; color: #fff;">
+                            J</div>
                         <div>
-                            <h2 style="margin: 0;">J. SMITH</h2>
+                            <h2 style="margin: 0;">James</h2>
                             <p style="color: var(--color-text-muted); margin: 0;">Member Since: Jan 2024</p>
                         </div>
                         <div style="margin-left: auto; text-align: right;">
@@ -560,14 +855,17 @@
                             <p style="margin: 0; color: var(--color-text-muted);">Current Rank</p>
                         </div>
                     </div>
-                    
+
                     <div style="margin-top: 2rem;">
                         <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
                             <span>Progress to LEGEND</span>
                             <span>3,400 / 5,000 XP</span>
                         </div>
-                        <div class="rank-bar-bg"><div class="rank-bar-fill"></div></div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--color-text-muted); font-family: var(--font-heading);">
+                        <div class="rank-bar-bg">
+                            <div class="rank-bar-fill"></div>
+                        </div>
+                        <div
+                            style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--color-text-muted); font-family: var(--font-heading);">
                             <span>RECRUIT</span>
                             <span>SOLDIER</span>
                             <span>ELITE</span>
@@ -577,11 +875,26 @@
                 </div>
 
                 <div class="kpi-grid">
-                    <div class="kpi-card"><div class="kpi-title">Matches Played</div><div class="kpi-value">124</div></div>
-                    <div class="kpi-card"><div class="kpi-title">Wins</div><div class="kpi-value text-secondary">82</div></div>
-                    <div class="kpi-card"><div class="kpi-title">Win Rate</div><div class="kpi-value">66%</div></div>
-                    <div class="kpi-card"><div class="kpi-title">Highest Score</div><div class="kpi-value text-primary">14,500</div></div>
-                    <div class="kpi-card"><div class="kpi-title">Current Streak</div><div class="kpi-value text-accent">3</div></div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">Matches Played</div>
+                        <div class="kpi-value">124</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">Wins</div>
+                        <div class="kpi-value text-secondary">82</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">Win Rate</div>
+                        <div class="kpi-value">66%</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">Highest Score</div>
+                        <div class="kpi-value text-primary">14,500</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-title">Current Streak</div>
+                        <div class="kpi-value text-accent">3</div>
+                    </div>
                 </div>
 
                 <h3 style="margin: 3rem 0 1rem;">Recent Matches</h3>
@@ -596,7 +909,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr style="background: rgba(255, 214, 0, 0.05); border-left: 2px solid var(--color-accent);">
+                            <tr
+                                style="background: rgba(255, 214, 0, 0.05); border-left: 2px solid var(--color-accent);">
                                 <td>Oct 15, 2025</td>
                                 <td>Standard Combat</td>
                                 <td><span style="color: var(--color-accent);">1st Place</span></td>
@@ -623,7 +937,9 @@
             <div id="tab-notifs" class="tab-pane">
                 <div class="tab-header">
                     <h2>TRANSMISSIONS</h2>
-                    <button class="btn btn-outline" id="mark-all-read" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="ph ph-check-circle"></i> Mark All Read</button>
+                    <button class="btn btn-outline" id="mark-all-read"
+                        style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="ph ph-check-circle"></i> Mark All
+                        Read</button>
                 </div>
 
                 <div class="notif-list">
@@ -631,24 +947,33 @@
                         <div class="notif-icon text-secondary"><i class="ph-fill ph-check-circle"></i></div>
                         <div>
                             <h4 style="margin-bottom: 0.25rem;">Booking Confirmed</h4>
-                            <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted);">Your deployment for Oct 28 at 18:45 is secured.</p>
-                            <span style="font-size: 0.75rem; color: var(--color-border); margin-top: 0.5rem; display: block;">2 hours ago</span>
+                            <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted);">Your deployment for
+                                Oct 28 at 18:45 is secured.</p>
+                            <span
+                                style="font-size: 0.75rem; color: var(--color-border); margin-top: 0.5rem; display: block;">2
+                                hours ago</span>
                         </div>
                     </div>
                     <div class="notif-item">
                         <div class="notif-icon text-accent"><i class="ph-fill ph-arrow-circle-up"></i></div>
                         <div>
                             <h4 style="margin-bottom: 0.25rem;">Rank Up!</h4>
-                            <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted);">Congratulations! You have reached ELITE rank.</p>
-                            <span style="font-size: 0.75rem; color: var(--color-border); margin-top: 0.5rem; display: block;">3 days ago</span>
+                            <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted);">Congratulations!
+                                You have reached ELITE rank.</p>
+                            <span
+                                style="font-size: 0.75rem; color: var(--color-border); margin-top: 0.5rem; display: block;">3
+                                days ago</span>
                         </div>
                     </div>
                     <div class="notif-item">
                         <div class="notif-icon text-primary"><i class="ph-fill ph-warning-circle"></i></div>
                         <div>
                             <h4 style="margin-bottom: 0.25rem;">Waiver Expiring</h4>
-                            <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted);">Your digital waiver expires in 14 days. Please re-sign.</p>
-                            <span style="font-size: 0.75rem; color: var(--color-border); margin-top: 0.5rem; display: block;">1 week ago</span>
+                            <p style="margin: 0; font-size: 0.9rem; color: var(--color-text-muted);">Your digital waiver
+                                expires in 14 days. Please re-sign.</p>
+                            <span
+                                style="font-size: 0.75rem; color: var(--color-border); margin-top: 0.5rem; display: block;">1
+                                week ago</span>
                         </div>
                     </div>
                 </div>
@@ -675,7 +1000,9 @@
                             <label class="form-label">Phone</label>
                             <input type="tel" class="form-control" value="555-0199">
                         </div>
-                        <button type="button" class="btn btn-outline">Update Profile</button>
+                        <div style="display: flex; justify-content: center;">
+                            <button type="button" class="btn btn-outline">Update Profile</button>
+                        </div>
                     </form>
 
                     <form style="margin-bottom: 3rem; padding-top: 2rem; border-top: 1px solid var(--color-border);">
@@ -688,13 +1015,20 @@
                             <label class="form-label">New Password</label>
                             <input type="password" class="form-control">
                         </div>
-                        <button type="button" class="btn btn-outline">Change Password</button>
+                        <div style="display: flex; justify-content: center;">
+                            <button type="button" class="btn btn-outline">Change Password</button>
+                        </div>
                     </form>
 
-                    <div style="padding-top: 2rem; border-top: 1px solid var(--color-border); border-color: rgba(255,59,59,0.3);">
+                    <div
+                        style="padding-top: 2rem; border-top: 1px solid var(--color-border); border-color: rgba(255,59,59,0.3);">
                         <h3 style="color: var(--color-primary); margin-bottom: 1rem;">Danger Zone</h3>
-                        <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Permanently delete your account and all combat history. This action cannot be undone.</p>
-                        <button type="button" class="btn btn-outline" style="border-color: var(--color-primary); color: var(--color-primary);" onclick="let p = prompt('TYPE DELETE TO CONFIRM'); if(p==='DELETE') { alert('Account Deleted'); }">Delete Account</button>
+                        <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Permanently
+                            delete your account and all combat history. This action cannot be undone.</p>
+                        <div style="display: flex; justify-content: center;">
+                            <button type="button" class="btn btn-outline"
+                                onclick="let p = prompt('TYPE DELETE TO CONFIRM'); if(p==='DELETE') { alert('Account Deleted'); }">Delete Account</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -706,4 +1040,5 @@
     <script src="assets/js/dashboard.js"></script>
     <script src="assets/js/main.js"></script> <!-- For theme/rtl toggles if added to dash later, and global behavior -->
 </body>
+
 </html>
