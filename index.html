@@ -1,1 +1,697 @@
-hello
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BattleGrid | Tactical Laser Tag Arena</title>
+    <meta name="description"
+        content="Experience the ultimate retro-futuristic tactical gaming arena. Book your session, track your rank, and dominate the leaderboard at BattleGrid.">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/rtl.css">
+    <!-- GA Placeholder -->
+    <!-- GA_TAG: replace with Google Analytics script -->
+    <style>
+        /* Home Specific Hero Styles */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            padding: 0 2rem;
+            background-color: var(--color-bg);
+        }
+
+        .hero-scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 255, 178, 0.04) 50%, rgba(0, 255, 178, 0.04));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .hero-reticle {
+            position: absolute;
+            width: 80vh;
+            height: 80vh;
+            opacity: 0.1;
+            z-index: 1;
+            animation: rotate 60s linear infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+        }
+
+        .hero-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    rgba(10, 10, 10, 0.6) 0%,
+                    rgba(10, 10, 10, 0.4) 50%,
+                    rgba(10, 10, 10, 0.85) 100%);
+            z-index: 1;
+        }
+
+        .terminal-text {
+            font-family: var(--font-heading);
+            font-size: var(--size-h1);
+            font-weight: var(--weight-h1);
+            color: var(--color-primary);
+            text-transform: uppercase;
+            min-height: calc(var(--size-h1) * 3);
+            /* Space for 3 lines */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+            text-shadow: 0 0 10px rgba(255, 59, 59, 0.5);
+        }
+
+        .terminal-line {
+            display: block;
+            opacity: 0;
+        }
+
+        .hero-actions {
+            opacity: 0;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            transition: opacity 0.5s ease;
+        }
+
+        .hero-actions.visible {
+            opacity: 1;
+        }
+
+        /* Leaderboard Marquee Strip */
+        .leaderboard-strip {
+            background-color: var(--color-surface);
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--color-primary);
+            border-bottom: 1px solid var(--color-border);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .strip-title {
+            position: absolute;
+            left: 2rem;
+            z-index: 10;
+            background: var(--color-surface);
+            padding-right: 2rem;
+            font-family: var(--font-heading);
+            color: var(--color-accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .marquee {
+            display: flex;
+            gap: 4rem;
+            white-space: nowrap;
+            padding-left: 300px;
+            /* offset for title */
+            animation: scrollMarquee 20s linear infinite;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+        }
+
+        .marquee-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--color-primary);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .marquee-score {
+            color: var(--color-secondary);
+        }
+
+        @keyframes scrollMarquee {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* How it works */
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .step-number {
+            width: 64px;
+            height: 64px;
+            border: 2px solid var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-primary);
+            margin: 0 auto 1rem;
+        }
+
+        /* Return Visit */
+        .cta-banner {
+            background: linear-gradient(45deg, var(--color-surface), rgba(255, 59, 59, 0.1));
+            border: 1px solid var(--color-primary);
+            padding: 4rem 2rem;
+            text-align: center;
+            margin: 4rem 0;
+            border-radius: var(--radius);
+        }
+    </style>
+    <!-- JSON-LD Placeholder -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SportsActivityLocation",
+      "name": "BattleGrid",
+      "description": "Tactical Laser Tag Arena"
+    }
+    </script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Battle<span>Grid</span></a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="home2.html" class="nav-link">Home 2</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="packages.html" class="nav-link">Packages</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="book.html" class="nav-link">Book Now</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i></button>
+                <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i
+                        class="ph ph-arrows-left-right"></i></button>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <button class="hamburger" aria-label="Menu"><i class="ph ph-list"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="drawer-overlay"></div>
+    <div class="mobile-drawer">
+        <div class="drawer-header">
+            <button class="drawer-close"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="drawer-menu">
+            <a href="index.html" class="drawer-link" style="color: var(--color-primary);">Home</a>
+            <a href="home2.html" class="drawer-link">Home 2</a>
+            <a href="services.html" class="drawer-link">Services</a>
+            <a href="packages.html" class="drawer-link">Packages</a>
+            <a href="about.html" class="drawer-link">About</a>
+            <a href="blog.html" class="drawer-link">Blog</a>
+            <a href="book.html" class="drawer-link">Book Now</a>
+            <a href="contact.html" class="drawer-link">Contact</a>
+            <a href="dashboard.html" class="drawer-link">Dashboard</a>
+        </div>
+        <a href="login.html" class="btn btn-outline btn-full" style="margin-bottom: 2rem;">Login</a>
+        <div class="drawer-actions">
+            <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i> Theme</button>
+            <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i class="ph ph-arrows-left-right"></i>
+                RTL</button>
+        </div>
+    </div>
+
+    <!-- HERO -->
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-bg-image"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-scanline"></div>
+        <svg class="hero-reticle" viewBox="0 0 100 100" fill="none" stroke="var(--color-primary)" stroke-width="0.5">
+            <circle cx="50" cy="50" r="40" stroke-dasharray="4 4" />
+            <circle cx="50" cy="50" r="30" />
+            <path d="M50 0 V20 M50 80 V100 M0 50 H20 M80 50 H100" />
+        </svg>
+        <div class="hero-content">
+            <div class="terminal-text" id="terminal-text">
+                <span class="terminal-line" id="line1"></span>
+                <span class="terminal-line" id="line2"></span>
+                <span class="terminal-line" id="line3"></span>
+            </div>
+            <div class="hero-actions" id="hero-actions">
+                <a href="book.html" class="btn btn-primary">Book Now</a>
+                <a href="packages.html" class="btn btn-outline">View Packages</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- LEADERBOARD STRIP -->
+    <section class="leaderboard-strip" style="padding: 0; margin: 0;">
+        <div class="strip-title">
+            <i class="ph ph-trophy"></i> THIS WEEK'S TOP COMBATANTS
+        </div>
+        <div class="marquee">
+            <div class="marquee-item">
+                <div class="marquee-avatar">J</div> J.SMITH <span class="marquee-score">14,500</span> <i
+                    class="ph ph-medal" style="color: var(--color-accent);"></i>
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-avatar" style="background:var(--color-secondary); color:#000;">T</div> T.REX <span
+                    class="marquee-score">13,200</span>
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-avatar">M</div> MAVERICK <span class="marquee-score">12,850</span>
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-avatar">S</div> SNAKE <span class="marquee-score">11,400</span>
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-avatar">G</div> GHOST <span class="marquee-score">10,900</span>
+            </div>
+            <!-- Duplicate for infinite scroll loop -->
+            <div class="marquee-item">
+                <div class="marquee-avatar">J</div> J.SMITH <span class="marquee-score">14,500</span> <i
+                    class="ph ph-medal" style="color: var(--color-accent);"></i>
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-avatar" style="background:var(--color-secondary); color:#000;">T</div> T.REX <span
+                    class="marquee-score">13,200</span>
+            </div>
+            <div class="marquee-item">
+                <div class="marquee-avatar">M</div> MAVERICK <span class="marquee-score">12,850</span>
+            </div>
+        </div>
+    </section>
+    <div class="text-center" style="background: var(--color-surface); padding-bottom: 1rem;">
+        <a href="dashboard.html" class="text-primary"
+            style="font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">Full Stats in your Dashboard
+            →</a>
+    </div>
+
+    <!-- EXPERIENCES TEASER -->
+    <section class="container fade-in-up">
+        <div class="section-header">
+            <h2>CHOOSE YOUR MISSION</h2>
+            <p>From tactical squad combat to free-for-all chaos. Our arena features state-of-the-art haptic feedback
+                vests and precision blasters.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <!-- Card 1 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <img src="assets/images/standard-combat.jpg" alt="Standard Laser Tag" loading="lazy">
+                </div>
+                <h3 class="card-title">Standard Combat</h3>
+                <div class="card-body">
+                    <p>Free-for-all or team based combat in our multi-level neon-lit arena.</p>
+                    <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                        <span
+                            style="font-size: 0.85rem; border: 1px solid var(--color-border); padding: 0.2rem 0.5rem;"><i
+                                class="ph ph-clock"></i> 30 Min</span>
+                        <span
+                            style="font-size: 0.85rem; border: 1px solid var(--color-secondary); color: var(--color-secondary); padding: 0.2rem 0.5rem;">Beginner</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="book.html" class="btn btn-outline btn-full">Book</a>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <img src="assets/images/team-deathmatch.jpg" alt="Team Deathmatch" loading="lazy">
+                </div>
+                <h3 class="card-title">Team Deathmatch</h3>
+                <div class="card-body">
+                    <p>Tactical squad-vs-squad objective based gameplay.</p>
+                    <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                        <span
+                            style="font-size: 0.85rem; border: 1px solid var(--color-border); padding: 0.2rem 0.5rem;"><i
+                                class="ph ph-clock"></i> 45 Min</span>
+                        <span
+                            style="font-size: 0.85rem; border: 1px solid var(--color-primary); color: var(--color-primary); padding: 0.2rem 0.5rem;">Advanced</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="book.html" class="btn btn-outline btn-full">Book</a>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="card">
+                <div class="card-img-wrapper">
+                    <img src="assets/images/vip-arena.jpg" alt="VIP Arena" loading="lazy">
+                </div>
+                <h3 class="card-title">VIP Arena</h3>
+                <div class="card-body">
+                    <p>Private arena lockout for up to 20 players. Custom game modes included.</p>
+                    <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                        <span
+                            style="font-size: 0.85rem; border: 1px solid var(--color-border); padding: 0.2rem 0.5rem;"><i
+                                class="ph ph-clock"></i> 60 Min</span>
+                        <span
+                            style="font-size: 0.85rem; border: 1px solid var(--color-accent); color: var(--color-accent); padding: 0.2rem 0.5rem;">Private</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="book.html" class="btn btn-outline btn-full">Book</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center" style="margin-top: 3rem;">
+            <a href="services.html" class="btn btn-outline" style="border:none; border-bottom: 1px solid;">View All
+                Services →</a>
+        </div>
+    </section>
+
+    <!-- PREMIUM DIVIDER -->
+    <div
+        style="height: 2px; background: linear-gradient(90deg, transparent, var(--color-primary), var(--color-secondary), transparent); margin: 2rem 0;">
+    </div>
+
+    <!-- GROUP EVENT PACKAGES -->
+    <section class="container fade-in-up">
+        <div class="section-header">
+            <h2>SQUAD PACKAGES</h2>
+            <p>Deploy together. Save resources. Our party packages handle everything from the battlefield to the
+                debriefing room.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div class="card" style="border-color: var(--color-border);">
+                <h3>Birthday Blitz</h3>
+                <p
+                    style="font-size: 1.5rem; color: var(--color-primary); font-family: var(--font-heading); margin-bottom: 1rem;">
+                    $250</p>
+                <ul style="text-align: left; margin-bottom: 2rem; width: 100%;">
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> 10 Players included</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> 2 Standard Matches</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> Party Room (45 min)</li>
+                </ul>
+                <div class="card-footer" style="margin-top: auto;">
+                    <a href="book.html" class="btn btn-primary btn-full">Book This Package</a>
+                </div>
+            </div>
+
+            <div class="card" style="border-color: var(--color-accent); position: relative;">
+                <div
+                    style="position: absolute; top: -12px; background: var(--color-accent); color: #000; font-size: 0.75rem; font-weight: bold; padding: 2px 10px; border-radius: 2px;">
+                    MOST POPULAR</div>
+                <h3>Corporate Assault</h3>
+                <p
+                    style="font-size: 1.5rem; color: var(--color-primary); font-family: var(--font-heading); margin-bottom: 1rem;">
+                    $450</p>
+                <ul style="text-align: left; margin-bottom: 2rem; width: 100%;">
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> Up to 20 Players</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> Private Arena Lockout
+                    </li>
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> Custom Team Modes</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> Dedicated Commander</li>
+                </ul>
+                <div class="card-footer" style="margin-top: auto;">
+                    <a href="book.html" class="btn btn-primary btn-full">Book This Package</a>
+                </div>
+            </div>
+
+            <div class="card" style="border-color: var(--color-border);">
+                <h3>School Squad</h3>
+                <p
+                    style="font-size: 1.5rem; color: var(--color-primary); font-family: var(--font-heading); margin-bottom: 1rem;">
+                    $350</p>
+                <ul style="text-align: left; margin-bottom: 2rem; width: 100%;">
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> Up to 30 Students</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> 2 Standard Matches</li>
+                    <li style="margin-bottom: 0.5rem;"><i class="ph ph-check text-primary"></i> Digital Invites</li>
+                </ul>
+                <div class="card-footer" style="margin-top: auto;">
+                    <a href="book.html" class="btn btn-primary btn-full">Book This Package</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center" style="margin-top: 3rem;">
+            <a href="packages.html" class="btn btn-outline" style="border:none; border-bottom: 1px solid;">See All
+                Packages →</a>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="container fade-in-up"
+        style="background-color: var(--color-surface); padding: 4rem 2rem; border-radius: var(--radius);">
+        <div class="section-header" style="margin-bottom: 3rem;">
+            <h2>HOW IT WORKS</h2>
+        </div>
+        <div class="step-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div>
+                <div class="step-number">1</div>
+                <h4 style="font-size: 1.25rem;"><i class="ph ph-calendar-check"></i> Book Online</h4>
+                <p style="font-size: 0.9rem;">Secure your drop zone instantly.</p>
+            </div>
+            <div>
+                <div class="step-number">2</div>
+                <h4 style="font-size: 1.25rem;"><i class="ph ph-pen-nib"></i> Sign Waiver</h4>
+                <p style="font-size: 0.9rem;">Complete digital briefing in dashboard.</p>
+            </div>
+            <div>
+                <div class="step-number">3</div>
+                <h4 style="font-size: 1.25rem;"><i class="ph ph-crosshair"></i> Gear Up & Battle</h4>
+                <p style="font-size: 0.9rem;">Arrive 15 mins early to suit up.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="container fade-in-up">
+        <div class="section-header">
+            <h2>COMBAT LOGS</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+
+            <!-- Testimonial 1 -->
+            <div class="card" style="text-align: left; align-items: flex-start;">
+                <div style="color: var(--color-accent); font-size: 1.25rem; margin-bottom: 1rem;">
+                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i
+                        class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                </div>
+                <p style="font-style: italic;">"The VIP arena experience was incredible for our dev team outing. The
+                    tech is responsive and the arena design is pure cyberpunk."</p>
+                <div
+                    style="margin-top: auto; border-top: 1px solid var(--color-border); padding-top: 1rem; width: 100%; display: flex; align-items: center; gap: 1rem;">
+                    <img src="assets/images/avatar-sarah.jpg" alt="Sarah Jenkins"
+                        style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-accent); flex-shrink: 0;">
+                    <div>
+                        <strong>Sarah Jenkins</strong><br>
+                        <span style="font-size: 0.85rem; color: var(--color-text-muted);">Corporate Assault</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="card" style="text-align: left; align-items: flex-start;">
+                <div style="color: var(--color-accent); font-size: 1.25rem; margin-bottom: 1rem;">
+                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i
+                        class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                </div>
+                <p style="font-style: italic;">"Easiest birthday party I've ever hosted. The staff handled everything
+                    and the kids talked about the mission for weeks."</p>
+                <div
+                    style="margin-top: auto; border-top: 1px solid var(--color-border); padding-top: 1rem; width: 100%; display: flex; align-items: center; gap: 1rem;">
+                    <img src="assets/images/avatar-mike.jpg" alt="Mike R."
+                        style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-primary); flex-shrink: 0;">
+                    <div>
+                        <strong>Mike R.</strong><br>
+                        <span style="font-size: 0.85rem; color: var(--color-text-muted);">Birthday Blitz</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="card" style="text-align: left; align-items: flex-start;">
+                <div style="color: var(--color-accent); font-size: 1.25rem; margin-bottom: 1rem;">
+                    <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i
+                        class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                </div>
+                <p style="font-style: italic;">"Been playing laser tag for years and this is by far the most advanced
+                    system I've used. The leaderboards keep me coming back."</p>
+                <div
+                    style="margin-top: auto; border-top: 1px solid var(--color-border); padding-top: 1rem; width: 100%; display: flex; align-items: center; gap: 1rem;">
+                    <img src="assets/images/avatar-alex.jpg" alt="Alex Ghost T."
+                        style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-secondary); flex-shrink: 0;">
+                    <div>
+                        <strong>Alex 'Ghost' T.</strong><br>
+                        <span style="font-size: 0.85rem; color: var(--color-text-muted);">Standard Combat</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- RETURN CTA -->
+    <section class="container fade-in-up">
+        <div class="cta-banner">
+            <h2>YOUR RANK AWAITS. PLAY AGAIN.</h2>
+            <p
+                style="font-family: var(--font-heading); color: var(--color-secondary); letter-spacing: 0.1em; margin-bottom: 2rem;">
+                RECRUIT &rarr; SOLDIER &rarr; ELITE &rarr; LEGEND</p>
+            <a href="login.html" class="btn btn-primary">Log In to Check Your Rank</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="nav-logo"
+                        style="display: block; margin-bottom: 1rem;">Battle<span>Grid</span></a>
+                    <p style="font-size: 0.9rem;">ENTER AT YOUR OWN RISK. The ultimate tactical laser tag experience.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="home2.html">Home Alternate</a>
+                        <a href="about.html">About</a>
+                        <a href="services.html">Services</a>
+                        <a href="blog.html">Transmission Log</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Missions</h4>
+                    <div class="footer-links">
+                        <a href="book.html">Deploy Now</a>
+                        <a href="packages.html">Group Packages</a>
+                        <a href="contact.html">Contact Base</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Comms</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="ph ph-map-pin text-primary"></i> Sector 7G, Neo-City<br>
+                        <i class="ph ph-phone text-primary"></i> 555-0199-TACT<br>
+                        <i class="ph ph-envelope text-primary"></i> basecamp@battlegrid.com
+                    </p>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Terminal Boot Sequence Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReduced) {
+                document.getElementById('line1').textContent = "BATTLEGROUND READY.";
+                document.getElementById('line1').style.opacity = 1;
+                document.getElementById('line2').textContent = "CHOOSE YOUR MISSION.";
+                document.getElementById('line2').style.opacity = 1;
+                document.getElementById('line3').textContent = "BOOK YOUR ARENA.";
+                document.getElementById('line3').style.opacity = 1;
+                document.getElementById('hero-actions').classList.add('visible');
+                return;
+            }
+
+            const lines = [
+                { id: 'line1', text: "BATTLEGROUND READY." },
+                { id: 'line2', text: "CHOOSE YOUR MISSION." },
+                { id: 'line3', text: "BOOK YOUR ARENA." }
+            ];
+
+            let currentLine = 0;
+
+            const typeLine = (index) => {
+                if (index >= lines.length) {
+                    setTimeout(() => {
+                        document.getElementById('hero-actions').classList.add('visible');
+                    }, 500);
+                    return;
+                }
+
+                const el = document.getElementById(lines[index].id);
+                el.style.opacity = 1;
+                const text = lines[index].text;
+                let charIndex = 0;
+
+                const typing = setInterval(() => {
+                    if (charIndex < text.length) {
+                        el.textContent += text.charAt(charIndex);
+                        charIndex++;
+                    } else {
+                        clearInterval(typing);
+                        setTimeout(() => typeLine(index + 1), 400); // Wait before next line
+                    }
+                }, 50); // Typing speed
+            };
+
+            setTimeout(() => typeLine(0), 500); // Initial delay
+        });
+    </script>
+</body>
+
+</html>

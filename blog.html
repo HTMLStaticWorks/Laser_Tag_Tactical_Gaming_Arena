@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transmission Log | BattleGrid</title>
+    <meta name="description" content="Read the latest news, tactics, and events from the BattleGrid arena.">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/rtl.css">
+    <!-- GA_TAG: replace with Google Analytics script -->
+    <style>
+        .page-header {
+            padding: 10rem 2rem 6rem;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), var(--color-bg)), url('https://images.unsplash.com/photo-1542562544-59e5bd27bbdc?auto=format&fit=crop&q=80&w=1920') no-repeat center center / cover;
+            position: relative;
+        }
+
+        .page-header h1 {
+            color: var(--color-primary);
+            text-shadow: 0 0 10px rgba(255, 59, 59, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .filter-tab {
+            background: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            padding: 0.5rem 1.5rem;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .blog-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .blog-img-link {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+        }
+
+        .blog-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-img {
+            transform: scale(1.05);
+        }
+
+        .blog-category {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .blog-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .blog-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .author-avatar {
+            width: 24px;
+            height: 24px;
+            background: var(--color-border);
+            color: var(--color-text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .blog-title {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .blog-title a {
+            color: var(--color-text);
+        }
+
+        .blog-title a:hover {
+            color: var(--color-primary);
+        }
+
+        .blog-excerpt {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 4rem;
+        }
+
+        /* FAQ Accordion */
+        .faq-section {
+            margin-top: 6rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: var(--color-surface);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            background: var(--color-bg);
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            text-align: left;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 1.5rem;
+            max-height: 500px;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Battle<span>Grid</span></a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="home2.html" class="nav-link">Home 2</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="packages.html" class="nav-link">Packages</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="blog.html" class="nav-link active">Blog</a></li>
+                <li><a href="book.html" class="nav-link">Book Now</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i></button>
+                <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i
+                        class="ph ph-arrows-left-right"></i></button>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <button class="hamburger" aria-label="Menu"><i class="ph ph-list"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="drawer-overlay"></div>
+    <div class="mobile-drawer">
+        <div class="drawer-header">
+            <button class="drawer-close"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="drawer-menu">
+            <a href="index.html" class="drawer-link">Home</a>
+            <a href="home2.html" class="drawer-link">Home 2</a>
+            <a href="services.html" class="drawer-link">Services</a>
+            <a href="packages.html" class="drawer-link">Packages</a>
+            <a href="about.html" class="drawer-link">About</a>
+            <a href="blog.html" class="drawer-link" style="color: var(--color-primary);">Blog</a>
+            <a href="book.html" class="drawer-link">Book Now</a>
+            <a href="contact.html" class="drawer-link">Contact</a>
+            <a href="dashboard.html" class="drawer-link">Dashboard</a>
+        </div>
+        <a href="login.html" class="btn btn-outline btn-full" style="margin-bottom: 2rem;">Login</a>
+        <div class="drawer-actions">
+            <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i> Theme</button>
+            <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i class="ph ph-arrows-left-right"></i>
+                RTL</button>
+        </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+        <div class="container fade-in-up">
+            <h1>TRANSMISSION LOG</h1>
+            <p class="lead">News, tactics, and intel from the arena.</p>
+        </div>
+    </header>
+
+    <!-- BLOG CONTENT -->
+    <section class="container fade-in-up" style="padding-bottom: 6rem;">
+
+        <!-- Filters -->
+        <div class="filter-tabs">
+            <button class="filter-tab active">All</button>
+            <button class="filter-tab">Tactics</button>
+            <button class="filter-tab">Events</button>
+            <button class="filter-tab">News</button>
+            <button class="filter-tab">Gear Updates</button>
+        </div>
+
+        <!-- Grid -->
+        <div class="blog-grid">
+
+            <!-- Card 1 -->
+            <article class="blog-card">
+                <a href="blog-single.html" class="blog-img-link">
+                    <span class="blog-category">Tactics</span>
+                    <img src="assets/images/blog-vip-tactics.jpg" alt="VIP Arena Strategies" class="blog-img"
+                        loading="lazy">
+                </a>
+                <div class="blog-content" style="text-align: center;">
+                    <div class="blog-meta" style="justify-content: center;">
+                        <div class="blog-author">
+                            <div class="author-avatar">M</div> M. Vance
+                        </div>
+                        <div>Oct 24, 2025</div>
+                    </div>
+                    <h3 class="blog-title"><a href="blog-single.html">Mastering the VIP Arena: Advanced Strategies</a>
+                    </h3>
+                    <p class="blog-excerpt">When you're defending the VIP, traditional formations won't save you. Learn
+                        how to control choke points and secure the victory.</p>
+                    <a href="blog-single.html" class="text-primary"
+                        style="font-family: var(--font-heading); text-transform: uppercase; display: block;">Read
+                        Transmission &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="blog-card">
+                <a href="blog-single.html" class="blog-img-link">
+                    <span class="blog-category">News</span>
+                    <img src="assets/images/blog-sector4.jpg" alt="Sector 4 Layout" class="blog-img" loading="lazy">
+                </a>
+                <div class="blog-content" style="text-align: center;">
+                    <div class="blog-meta" style="justify-content: center;">
+                        <div class="blog-author">
+                            <div class="author-avatar">E</div> E. Rostova
+                        </div>
+                        <div>Oct 18, 2025</div>
+                    </div>
+                    <h3 class="blog-title"><a href="blog-single.html">Sector 4 Lockdown: New Arena Layout Unveiled</a>
+                    </h3>
+                    <p class="blog-excerpt">We've completely redesigned Sector 4 to include multi-level sniper roosts
+                        and narrower corridors for intense CQC.</p>
+                    <a href="blog-single.html" class="text-primary"
+                        style="font-family: var(--font-heading); text-transform: uppercase; display: block;">Read
+                        Transmission &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="blog-card">
+                <a href="blog-single.html" class="blog-img-link">
+                    <span class="blog-category">Events</span>
+                    <img src="assets/images/blog-halloween.jpg" alt="Halloween Night Ops" class="blog-img"
+                        loading="lazy">
+                </a>
+                <div class="blog-content" style="text-align: center;">
+                    <div class="blog-meta" style="justify-content: center;">
+                        <div class="blog-author">
+                            <div class="author-avatar">D</div> D. Chen
+                        </div>
+                        <div>Oct 12, 2025</div>
+                    </div>
+                    <h3 class="blog-title"><a href="blog-single.html">Halloween Night Ops Tournament Announcement</a>
+                    </h3>
+                    <p class="blog-excerpt">Get your squad ready. The Halloween Night Ops tournament features a $5,000
+                        prize pool and exclusive physical dog tags.</p>
+                    <a href="blog-single.html" class="text-primary"
+                        style="font-family: var(--font-heading); text-transform: uppercase; display: block;">Read
+                        Transmission &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="blog-card">
+                <a href="blog-single.html" class="blog-img-link">
+                    <span class="blog-category">Gear Updates</span>
+                    <img src="assets/images/blog-vests.jpg" alt="Gen-5 Haptic Vests" class="blog-img" loading="lazy">
+                </a>
+                <div class="blog-content" style="text-align: center;">
+                    <div class="blog-meta" style="justify-content: center;">
+                        <div class="blog-author">
+                            <div class="author-avatar">D</div> D. Chen
+                        </div>
+                        <div>Oct 05, 2025</div>
+                    </div>
+                    <h3 class="blog-title"><a href="blog-single.html">Gen-5 Haptic Vests Deployed to Base Camp</a></h3>
+                    <p class="blog-excerpt">We've upgraded our entire arsenal. The new Gen-5 vests feature directional
+                        hit detection and localized damage modifiers.</p>
+                    <a href="blog-single.html" class="text-primary"
+                        style="font-family: var(--font-heading); text-transform: uppercase; display: block;">Read
+                        Transmission &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Card 5 -->
+            <article class="blog-card">
+                <a href="blog-single.html" class="blog-img-link">
+                    <span class="blog-category">Tactics</span>
+                    <img src="assets/images/blog-flank.jpg" alt="Art of the Flank" class="blog-img" loading="lazy">
+                </a>
+                <div class="blog-content" style="text-align: center;">
+                    <div class="blog-meta" style="justify-content: center;">
+                        <div class="blog-author">
+                            <div class="author-avatar">M</div> M. Vance
+                        </div>
+                        <div>Sep 28, 2025</div>
+                    </div>
+                    <h3 class="blog-title"><a href="blog-single.html">The Art of the Flank: Breaking defensive lines</a>
+                    </h3>
+                    <p class="blog-excerpt">When a team locks down the central bridge, a coordinated flank is your only
+                        option. Here is how to execute it perfectly.</p>
+                    <a href="blog-single.html" class="text-primary"
+                        style="font-family: var(--font-heading); text-transform: uppercase; display: block;">Read
+                        Transmission &rarr;</a>
+                </div>
+            </article>
+
+            <!-- Card 6 -->
+            <article class="blog-card">
+                <a href="blog-single.html" class="blog-img-link">
+                    <span class="blog-category">Events</span>
+                    <img src="assets/images/blog-corporate-clash.jpg" alt="Corporate Clash Recap" class="blog-img"
+                        loading="lazy">
+                </a>
+                <div class="blog-content" style="text-align: center;">
+                    <div class="blog-meta" style="justify-content: center;">
+                        <div class="blog-author">
+                            <div class="author-avatar">E</div> E. Rostova
+                        </div>
+                        <div>Sep 15, 2025</div>
+                    </div>
+                    <h3 class="blog-title"><a href="blog-single.html">Recap: Corporate Clash Summer 2025</a></h3>
+                    <p class="blog-excerpt">TechCorp Inc takes the trophy after a grueling 5-hour tournament. See the
+                        highlights, stats, and final leaderboard standings.</p>
+                    <a href="blog-single.html" class="text-primary"
+                        style="font-family: var(--font-heading); text-transform: uppercase; display: block;">Read
+                        Transmission &rarr;</a>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Load More -->
+        <div class="pagination">
+            <button class="btn btn-outline"><i class="ph ph-arrows-clockwise"></i> Load More Archives</button>
+        </div>
+
+        <!-- FAQ SECTION -->
+        <div class="faq-section">
+            <h3 style="margin-bottom: 2rem; text-align: center;"><i class="ph ph-question"></i> TRANSMISSION LOG FAQ</h3>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How often are tactical logs updated? <i class="ph ph-caret-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Our command team publishes fresh transmissions, tactical guides, and layout intelligence updates every week. Keep an eye on the feed or check your digital dashboard for priority announcements.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I submit a battle log or team gameplay strategy? <i class="ph ph-caret-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Affirmative! We actively feature outstanding tactical guides submitted by our top-ranking operatives. Send your gameplay recordings or written strategies to basecamp@battlegrid.com for review.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Where can I view tournament statistics and squad leaderboard ranks? <i class="ph ph-caret-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>All tournament recaps, live scoreboard data, and detailed telemetry analysis (including hit-accuracy and damage modifiers) are accessible directly via our Dashboard portal.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="nav-logo"
+                        style="display: block; margin-bottom: 1rem;">Battle<span>Grid</span></a>
+                    <p style="font-size: 0.9rem;">ENTER AT YOUR OWN RISK. The ultimate tactical laser tag experience.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="home2.html">Home Alternate</a>
+                        <a href="about.html">About</a>
+                        <a href="services.html">Services</a>
+                        <a href="blog.html">Transmission Log</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Missions</h4>
+                    <div class="footer-links">
+                        <a href="book.html">Deploy Now</a>
+                        <a href="packages.html">Group Packages</a>
+                        <a href="contact.html">Contact Base</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Comms</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="ph ph-map-pin text-primary"></i> Sector 7G, Neo-City<br>
+                        <i class="ph ph-phone text-primary"></i> 555-0199-TACT<br>
+                        <i class="ph ph-envelope text-primary"></i> basecamp@battlegrid.com
+                    </p>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', () => {
+                const parent = item.parentElement;
+                parent.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

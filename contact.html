@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Base Command | BattleGrid</title>
+    <meta name="description" content="Get in touch with BattleGrid. Find our arena location, hours of operation, and contact information.">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/rtl.css">
+    <!-- GA_TAG: replace with Google Analytics script -->
+    <style>
+        .page-header {
+            padding: 10rem 2rem 6rem;
+            text-align: center;
+            background: var(--color-bg);
+            position: relative;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .page-header h1 {
+            color: var(--color-primary);
+            text-shadow: 0 0 10px rgba(255,59,59,0.3);
+            margin-bottom: 1rem;
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+        @media(max-width: 768px) {
+            .contact-layout { grid-template-columns: 1fr; }
+            .contact-info {
+                display: flex;
+                flex-direction: column;
+            }
+            .contact-info > div:last-child {
+                order: -1;
+            }
+        }
+        
+        @media(max-width: 360px) {
+            /* Fix for small mobile per prompt */
+            .contact-layout, .contact-info, .form-container {
+                text-align: center;
+            }
+            .info-block {
+                align-items: center;
+                flex-direction: column;
+                text-align: center;
+            }
+            .info-icon { margin-right: 0 !important; margin-bottom: 1rem; }
+        }
+
+        .form-container {
+            background: var(--color-surface);
+            padding: 3rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 3rem;
+        }
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .info-icon {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+        .info-content h3 {
+            margin-bottom: 0.5rem;
+        }
+        .info-content p {
+            margin-bottom: 0;
+            color: var(--color-text-muted);
+        }
+        
+        .social-strip {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .social-strip a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+        .social-strip a:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .map-container {
+            margin-top: 4rem;
+            width: 100%;
+            height: 450px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Battle<span>Grid</span></a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="home2.html" class="nav-link">Home 2</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="packages.html" class="nav-link">Packages</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="book.html" class="nav-link">Book Now</a></li>
+                <li><a href="contact.html" class="nav-link active">Contact</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i></button>
+                <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i class="ph ph-arrows-left-right"></i></button>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <button class="hamburger" aria-label="Menu"><i class="ph ph-list"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="drawer-overlay"></div>
+    <div class="mobile-drawer">
+        <div class="drawer-header">
+            <button class="drawer-close"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="drawer-menu">
+            <a href="index.html" class="drawer-link">Home</a>
+            <a href="home2.html" class="drawer-link">Home 2</a>
+            <a href="services.html" class="drawer-link">Services</a>
+            <a href="packages.html" class="drawer-link">Packages</a>
+            <a href="about.html" class="drawer-link">About</a>
+            <a href="blog.html" class="drawer-link">Blog</a>
+            <a href="book.html" class="drawer-link">Book Now</a>
+            <a href="contact.html" class="drawer-link" style="color: var(--color-primary);">Contact</a>
+            <a href="dashboard.html" class="drawer-link">Dashboard</a>
+        </div>
+        <a href="login.html" class="btn btn-outline btn-full" style="margin-bottom: 2rem;">Login</a>
+        <div class="drawer-actions">
+            <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i> Theme</button>
+            <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i class="ph ph-arrows-left-right"></i> RTL</button>
+        </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+        <div class="container fade-in-up">
+            <h1>CONTACT BASE COMMAND</h1>
+            <p class="lead">Need intel? Send a transmission to our comms team.</p>
+        </div>
+    </header>
+
+    <main class="container fade-in-up" style="padding-bottom: 6rem;">
+        <div class="contact-layout">
+            
+            <!-- Contact Form -->
+            <div class="form-container">
+                <h3 style="margin-bottom: 2rem;">SEND TRANSMISSION</h3>
+                <form action="https://formspree.io/f/placeholder" method="POST" data-validate="true" id="contact-form">
+                    <div class="form-group">
+                        <label class="form-label">Name <span class="required">*</span></label>
+                        <input type="text" name="name" class="form-control" required>
+                        <div class="error-msg">Name is required</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email <span class="required">*</span></label>
+                        <input type="email" name="email" class="form-control" required>
+                        <div class="error-msg">Valid email is required</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" name="phone" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Subject <span class="required">*</span></label>
+                        <select name="subject" class="form-control" required>
+                            <option value="">Select a subject...</option>
+                            <option value="Group Booking">Group Booking Inquiry</option>
+                            <option value="General">General Question</option>
+                            <option value="Corporate">Corporate Event</option>
+                            <option value="Media">Media / PR</option>
+                        </select>
+                        <div class="error-msg">Please select a subject</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Message <span class="required">*</span></label>
+                        <textarea name="message" class="form-control" rows="5" required></textarea>
+                        <div class="error-msg">Message cannot be empty</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">Transmit Message</button>
+                    
+                    <div id="form-success" style="display: none; margin-top: 1rem; color: var(--color-secondary); text-align: center; font-family: var(--font-heading); padding: 1rem; border: 1px solid var(--color-secondary);">
+                        <i class="ph-fill ph-check-circle"></i> MISSION RECEIVED. SEE YOU ON THE GRID.
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                
+                <div class="info-block">
+                    <div class="info-icon"><i class="ph ph-map-pin"></i></div>
+                    <div class="info-content">
+                        <h3>Arena Location</h3>
+                        <p>BattleGrid HQ<br>Sector 7G, Neo-City<br>Cyber District, 90210</p>
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-icon"><i class="ph ph-clock"></i></div>
+                    <div class="info-content">
+                        <h3>Hours of Operation</h3>
+                        <p><strong>Weekdays:</strong> 14:00 - 22:00<br>
+                        <strong>Weekends:</strong> 10:00 - 24:00<br>
+                        <strong>Holidays:</strong> 12:00 - 20:00</p>
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <div class="info-icon"><i class="ph ph-headset"></i></div>
+                    <div class="info-content">
+                        <h3>Direct Comms</h3>
+                        <p><strong>Phone:</strong> 555-0199-TACT<br>
+                        <strong>Email:</strong> basecamp@battlegrid.com</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Join the Network</h3>
+                    <div class="social-strip">
+                        <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Google Maps iframe Placeholder -->
+        <div class="map-container fade-in-up">
+            <!-- GOOGLE_MAPS_API_KEY -->
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0635105994344!2d-122.41941548468205!3d37.77492997975903!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c6c8f4459%3A0xb10ed6d9b5050f14!2sCyberpunk%20City!5e0!3m2!1sen!2sus!4v1611234567890!5m2!1sen!2sus" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="nav-logo" style="display: block; margin-bottom: 1rem;">Battle<span>Grid</span></a>
+                    <p style="font-size: 0.9rem;">ENTER AT YOUR OWN RISK. The ultimate tactical laser tag experience.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="home2.html">Home Alternate</a>
+                        <a href="about.html">About</a>
+                        <a href="services.html">Services</a>
+                        <a href="blog.html">Transmission Log</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Missions</h4>
+                    <div class="footer-links">
+                        <a href="book.html">Deploy Now</a>
+                        <a href="packages.html">Group Packages</a>
+                        <a href="contact.html">Contact Base</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Comms</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="ph ph-map-pin text-primary"></i> Sector 7G, Neo-City<br>
+                        <i class="ph ph-phone text-primary"></i> 555-0199-TACT<br>
+                        <i class="ph ph-envelope text-primary"></i> basecamp@battlegrid.com
+                    </p>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Intercept form submit to show inline tactical success message per prompt
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                // Main validation is handled in main.js, if it reaches here and is valid:
+                if (!e.defaultPrevented) {
+                    e.preventDefault(); // Stop actual form submission for the demo
+                    const submitBtn = contactForm.querySelector('button[type="submit"]');
+                    submitBtn.style.display = 'none';
+                    document.getElementById('form-success').style.display = 'block';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

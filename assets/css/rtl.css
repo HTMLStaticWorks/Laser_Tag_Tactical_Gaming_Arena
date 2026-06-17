@@ -1,0 +1,57 @@
+/* --- RTL OVERRIDES (Right-to-Left Support) --- */
+
+[dir="rtl"], .rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .text-left { text-align: right; }
+[dir="rtl"] .text-right { text-align: left; }
+
+/* Navbar */
+[dir="rtl"] .nav-logo {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+[dir="rtl"] .nav-menu {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Mobile Drawer */
+[dir="rtl"] .mobile-drawer {
+  right: auto;
+  left: -100%;
+  border-left: none;
+  border-right: 2px solid var(--color-primary);
+}
+
+[dir="rtl"] .mobile-drawer.open {
+  right: auto;
+  left: 0;
+}
+
+[dir="rtl"] .drawer-header {
+  justify-content: flex-start;
+}
+
+/* Form inputs & icons */
+[dir="rtl"] .form-control {
+  text-align: right;
+}
+
+[dir="rtl"] .btn {
+  flex-direction: row-reverse;
+}
+
+/* Leaderboard */
+[dir="rtl"] .leaderboard-table th,
+[dir="rtl"] .leaderboard-table td {
+  text-align: right;
+}
+
+/* Icons within buttons/links */
+[dir="rtl"] .ph {
+  transform: scaleX(-1);
+}

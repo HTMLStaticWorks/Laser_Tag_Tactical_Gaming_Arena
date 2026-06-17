@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy Your Mission | BattleGrid</title>
+    <meta name="description" content="Book your tactical laser tag session at BattleGrid. Choose your mission, set your squad size, and deploy.">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/rtl.css">
+    <!-- GA_TAG: replace with Google Analytics script -->
+    <style>
+        body { background-color: var(--color-bg); }
+        .page-header {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .page-header h1 {
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .wizard-container {
+            max-width: 1000px;
+            margin: 4rem auto;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 3rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--color-border);
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            background: var(--color-surface);
+            padding: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-text-muted);
+            font-family: var(--font-heading);
+            font-weight: var(--weight-heading);
+            text-transform: uppercase;
+        }
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-bg);
+            border: 2px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: var(--transition);
+        }
+        .progress-step.active { color: var(--color-primary); }
+        .progress-step.active .step-circle {
+            border-color: var(--color-primary);
+            background: var(--color-primary);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255,59,59,0.5);
+        }
+
+        /* Step 1: Mission Select */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .mission-card {
+            border: 1px solid var(--color-border);
+            background: var(--color-bg);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+        .mission-card:hover { border-color: var(--color-secondary); }
+        .mission-card.selected {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 15px rgba(255,59,59,0.2);
+            position: relative;
+        }
+        .mission-card.selected::after {
+            content: '\2713'; /* checkmark */
+            position: absolute;
+            top: 10px; right: 10px;
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+        .mission-icon {
+            font-size: 2.5rem;
+            color: var(--color-text);
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+        .mission-card.selected .mission-icon { color: var(--color-primary); }
+        .price-label {
+            display: inline-block;
+            margin-top: 1rem;
+            font-family: var(--font-heading);
+            color: var(--color-secondary);
+        }
+
+        /* Step 2: Date & Squad */
+        .date-squad-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        @media(max-width: 768px) {
+            .date-squad-grid { grid-template-columns: 1fr; }
+        }
+        .slot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .time-slot {
+            padding: 0.75rem 0;
+            text-align: center;
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .time-slot:not(.unavailable):hover { border-color: var(--color-secondary); }
+        .time-slot.selected {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: #fff;
+        }
+        .time-slot.unavailable {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.05) 5px, rgba(255,255,255,0.05) 10px);
+        }
+        
+        .stepper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .stepper-btn {
+            width: 40px; height: 40px;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .stepper-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+        .stepper-val {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            width: 50px;
+            text-align: center;
+        }
+
+        /* Step 3: Summary & Contact */
+        .summary-panel {
+            background: var(--color-bg);
+            border: 1px solid var(--color-primary);
+            padding: 2rem;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+        .summary-row:last-child { border-bottom: none; }
+        .summary-total {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-accent);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--color-border);
+            display: flex; justify-content: space-between;
+        }
+
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .step-content { display: none; }
+        .step-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* Success Message */
+        .inline-success {
+            display: none;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .inline-success h2 { color: var(--color-secondary); margin-bottom: 1rem; }
+        .ref-box {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 1px solid var(--color-secondary);
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: #fff;
+            margin-top: 2rem;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Battle<span>Grid</span></a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="home2.html" class="nav-link">Home 2</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="packages.html" class="nav-link">Packages</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="book.html" class="nav-link active">Book Now</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i></button>
+                <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i class="ph ph-arrows-left-right"></i></button>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <button class="hamburger" aria-label="Menu"><i class="ph ph-list"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="drawer-overlay"></div>
+    <div class="mobile-drawer">
+        <div class="drawer-header">
+            <button class="drawer-close"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="drawer-menu">
+            <a href="index.html" class="drawer-link">Home</a>
+            <a href="home2.html" class="drawer-link">Home 2</a>
+            <a href="services.html" class="drawer-link">Services</a>
+            <a href="packages.html" class="drawer-link">Packages</a>
+            <a href="about.html" class="drawer-link">About</a>
+            <a href="blog.html" class="drawer-link">Blog</a>
+            <a href="book.html" class="drawer-link" style="color: var(--color-primary);">Book Now</a>
+            <a href="contact.html" class="drawer-link">Contact</a>
+            <a href="dashboard.html" class="drawer-link">Dashboard</a>
+        </div>
+        <a href="login.html" class="btn btn-outline btn-full" style="margin-bottom: 2rem;">Login</a>
+        <div class="drawer-actions">
+            <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i> Theme</button>
+            <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i class="ph ph-arrows-left-right"></i> RTL</button>
+        </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+        <div class="container fade-in-up">
+            <h1>DEPLOY YOUR MISSION</h1>
+            <p class="lead">Secure your drop zone and prepare for combat.</p>
+        </div>
+    </header>
+
+    <!-- WIZARD -->
+    <main class="container">
+        <div class="wizard-container fade-in-up">
+            
+            <div class="progress-bar">
+                <div class="progress-step active" id="ind-1">
+                    <div class="step-circle">1</div>
+                    Mission
+                </div>
+                <div class="progress-step" id="ind-2">
+                    <div class="step-circle">2</div>
+                    Squad & Time
+                </div>
+                <div class="progress-step" id="ind-3">
+                    <div class="step-circle">3</div>
+                    Confirm
+                </div>
+            </div>
+
+            <!-- Formspree action -->
+            <form id="booking-form" action="https://formspree.io/f/placeholder" method="POST">
+                
+                <!-- STEP 1 -->
+                <div class="step-content active" id="step-1">
+                    <h3 style="margin-bottom: 2rem; text-align: center;">SELECT YOUR COMBAT MODE</h3>
+                    <div class="mission-grid">
+                        <div class="mission-card selected" onclick="selectMission(this, 'Standard Combat', 30)">
+                            <i class="ph ph-crosshair mission-icon"></i>
+                            <h4>Standard Combat</h4>
+                            <p style="font-size: 0.85rem; color: var(--color-text-muted);">30 Min • Free-for-all</p>
+                            <span class="price-label">From $30/pp</span>
+                        </div>
+                        <div class="mission-card" onclick="selectMission(this, 'Team Deathmatch', 35)">
+                            <i class="ph ph-users-three mission-icon"></i>
+                            <h4>Team Deathmatch</h4>
+                            <p style="font-size: 0.85rem; color: var(--color-text-muted);">45 Min • Squad v Squad</p>
+                            <span class="price-label">From $35/pp</span>
+                        </div>
+                        <div class="mission-card" onclick="selectMission(this, 'VIP Arena', 45)">
+                            <i class="ph ph-crown mission-icon"></i>
+                            <h4>VIP Arena</h4>
+                            <p style="font-size: 0.85rem; color: var(--color-text-muted);">60 Min • Private Arena</p>
+                            <span class="price-label">From $45/pp</span>
+                        </div>
+                        <div class="mission-card" onclick="selectMission(this, 'Party Package', 250)">
+                            <i class="ph ph-cake mission-icon"></i>
+                            <h4>Party Package</h4>
+                            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Includes Room + 10 Players</p>
+                            <span class="price-label">From $250 total</span>
+                        </div>
+                    </div>
+                    <!-- Hidden input to store selection -->
+                    <input type="hidden" name="mission_type" id="mission_type" value="Standard Combat">
+                    <input type="hidden" id="mission_base_price" value="30">
+                    
+                    <div class="wizard-actions" style="justify-content: flex-end;">
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next: Squad & Date <i class="ph ph-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="step-content" id="step-2">
+                    <h3 style="margin-bottom: 2rem; text-align: center;">SET SQUAD SIZE AND DEPLOYMENT TIME</h3>
+                    
+                    <div class="date-squad-grid">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Deployment Date <span class="required">*</span></label>
+                                <input type="date" name="date" id="booking_date" class="form-control" required onchange="updateSummary()">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Squad Size (Players)</label>
+                                <div class="stepper">
+                                    <button type="button" class="stepper-btn" onclick="updateSquad(-1)">-</button>
+                                    <div class="stepper-val" id="squad-display">2</div>
+                                    <button type="button" class="stepper-btn" onclick="updateSquad(1)">+</button>
+                                </div>
+                                <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.5rem;">Min 2, Max 30</p>
+                                <input type="hidden" name="squad_size" id="squad_size" value="2">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Special Requests (Optional)</label>
+                                <textarea name="requests" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="form-label">Available Time Slots <span class="required">*</span></label>
+                            <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 1rem;">Select a date to view accurate slot availability.</p>
+                            
+                            <h5 style="margin-bottom: 0.5rem;">Afternoon</h5>
+                            <div class="slot-grid" style="margin-bottom: 1.5rem;">
+                                <div class="time-slot" onclick="selectSlot(this)">14:00</div>
+                                <div class="time-slot unavailable">14:45</div>
+                                <div class="time-slot" onclick="selectSlot(this)">15:30</div>
+                                <div class="time-slot" onclick="selectSlot(this)">16:15</div>
+                                <div class="time-slot" onclick="selectSlot(this)">17:00</div>
+                            </div>
+                            
+                            <h5 style="margin-bottom: 0.5rem;">Evening</h5>
+                            <div class="slot-grid">
+                                <div class="time-slot unavailable">18:00</div>
+                                <div class="time-slot" onclick="selectSlot(this)">18:45</div>
+                                <div class="time-slot" onclick="selectSlot(this)">19:30</div>
+                                <div class="time-slot" onclick="selectSlot(this)">20:15</div>
+                                <div class="time-slot" onclick="selectSlot(this)">21:00</div>
+                                <div class="time-slot unavailable">21:45</div>
+                            </div>
+                            <input type="hidden" name="time_slot" id="time_slot" required>
+                        </div>
+                    </div>
+
+                    <div class="wizard-actions">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(1)"><i class="ph ph-arrow-left"></i> Back</button>
+                        <button type="button" class="btn btn-primary" onclick="validateStep2()">Next: Confirm Details <i class="ph ph-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="step-content" id="step-3">
+                    <div class="date-squad-grid">
+                        
+                        <!-- Contact Fields -->
+                        <div>
+                            <h3 style="margin-bottom: 2rem;">COMMANDER DETAILS</h3>
+                            <div class="form-group">
+                                <label class="form-label">Full Name <span class="required">*</span></label>
+                                <input type="text" name="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address <span class="required">*</span></label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number <span class="required">*</span></label>
+                                <input type="tel" name="phone" class="form-control" required>
+                            </div>
+                            
+                            <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; margin-top: 1.5rem;">
+                                <input type="checkbox" name="terms" id="terms_check" required style="margin-top: 0.25rem;">
+                                <span style="font-size: 0.85rem; color: var(--color-text-muted);">I agree to the BattleGrid terms of service and understand that all players must sign a digital waiver before entering the arena.</span>
+                            </label>
+                        </div>
+
+                        <!-- Summary Panel -->
+                        <div>
+                            <div class="summary-panel">
+                                <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; text-align: center;">MISSION BRIEFING</h3>
+                                
+                                <div class="summary-row">
+                                    <span style="color: var(--color-text-muted);">Mission Type</span>
+                                    <strong id="sum_mission">Standard Combat</strong>
+                                </div>
+                                <div class="summary-row">
+                                    <span style="color: var(--color-text-muted);">Date</span>
+                                    <strong id="sum_date">Not Selected</strong>
+                                </div>
+                                <div class="summary-row">
+                                    <span style="color: var(--color-text-muted);">Time</span>
+                                    <strong id="sum_time">Not Selected</strong>
+                                </div>
+                                <div class="summary-row">
+                                    <span style="color: var(--color-text-muted);">Squad Size</span>
+                                    <strong id="sum_squad">2 Players</strong>
+                                </div>
+                                
+                                <div class="summary-total">
+                                    <span>TOTAL DUE</span>
+                                    <span id="sum_total">$60.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="wizard-actions">
+                        <button type="button" class="btn btn-outline" onclick="prevStep(2)"><i class="ph ph-arrow-left"></i> Back</button>
+                        <button type="submit" class="btn btn-primary">CONFIRM BOOKING</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <!-- SUCCESS MESSAGE -->
+            <div id="success-message" class="inline-success">
+                <h2>MISSION RECEIVED.</h2>
+                <p>Your deployment coordinates have been confirmed. A full briefing has been sent to your email.</p>
+                <div class="ref-box">REF: <span class="booking-ref" id="ref-number">BG-000000</span></div>
+                <div style="margin-top: 3rem;">
+                    <a href="index.html" class="btn btn-outline">Return to Base</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="nav-logo" style="display: block; margin-bottom: 1rem;">Battle<span>Grid</span></a>
+                    <p style="font-size: 0.9rem;">ENTER AT YOUR OWN RISK. The ultimate tactical laser tag experience.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="home2.html">Home Alternate</a>
+                        <a href="about.html">About</a>
+                        <a href="services.html">Services</a>
+                        <a href="blog.html">Transmission Log</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Missions</h4>
+                    <div class="footer-links">
+                        <a href="book.html">Deploy Now</a>
+                        <a href="packages.html">Group Packages</a>
+                        <a href="contact.html">Contact Base</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Comms</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="ph ph-map-pin text-primary"></i> Sector 7G, Neo-City<br>
+                        <i class="ph ph-phone text-primary"></i> 555-0199-TACT<br>
+                        <i class="ph ph-envelope text-primary"></i> basecamp@battlegrid.com
+                    </p>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Inline Wizard Logic for Book Now page
+        
+        function selectMission(el, name, price) {
+            document.querySelectorAll('.mission-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('mission_type').value = name;
+            document.getElementById('mission_base_price').value = price;
+            updateSummary();
+        }
+
+        function updateSquad(change) {
+            const input = document.getElementById('squad_size');
+            const display = document.getElementById('squad-display');
+            let val = parseInt(input.value) + change;
+            
+            // Constrain 2 to 30
+            if(val < 2) val = 2;
+            if(val > 30) val = 30;
+            
+            input.value = val;
+            display.textContent = val;
+            updateSummary();
+        }
+
+        function selectSlot(el) {
+            if(el.classList.contains('unavailable')) return;
+            document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('time_slot').value = el.textContent;
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const mission = document.getElementById('mission_type').value;
+            const price = parseFloat(document.getElementById('mission_base_price').value);
+            const date = document.getElementById('booking_date').value;
+            const time = document.getElementById('time_slot').value;
+            const squad = parseInt(document.getElementById('squad_size').value);
+
+            document.getElementById('sum_mission').textContent = mission;
+            document.getElementById('sum_date').textContent = date ? date : 'Not Selected';
+            document.getElementById('sum_time').textContent = time ? time : 'Not Selected';
+            document.getElementById('sum_squad').textContent = squad + ' Players';
+
+            // Calculate total
+            let total = 0;
+            if(mission === 'Party Package') {
+                // Base price includes 10 players, extra are $20
+                total = price;
+                if(squad > 10) {
+                    total += (squad - 10) * 20;
+                }
+            } else {
+                total = price * squad;
+            }
+            
+            document.getElementById('sum_total').textContent = '$' + total.toFixed(2);
+        }
+
+        function nextStep(step) {
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-' + step).classList.add('active');
+            
+            // Update indicators
+            for(let i=1; i<=3; i++) {
+                if(i <= step) {
+                    document.getElementById('ind-' + i).classList.add('active');
+                } else {
+                    document.getElementById('ind-' + i).classList.remove('active');
+                }
+            }
+            updateSummary();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function prevStep(step) {
+            nextStep(step);
+        }
+
+        function validateStep2() {
+            const date = document.getElementById('booking_date').value;
+            const time = document.getElementById('time_slot').value;
+            
+            if(!date) {
+                alert('Please select a deployment date.');
+                return;
+            }
+            if(!time) {
+                alert('Please select a deployment time slot.');
+                return;
+            }
+            nextStep(3);
+        }
+
+        // Handle Form Submit
+        document.getElementById('booking-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop actual submit for prototype
+            
+            const terms = document.getElementById('terms_check');
+            if(!terms.checked) {
+                alert('You must accept the terms to proceed.');
+                return;
+            }
+
+            // Hide form, show success
+            this.style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+            
+            // Generate random ref
+            const ref = 'BG-' + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('ref-number').textContent = ref;
+            
+            document.getElementById('success-message').style.display = 'block';
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        });
+        
+        // Init summary
+        updateSummary();
+    </script>
+</body>
+</html>

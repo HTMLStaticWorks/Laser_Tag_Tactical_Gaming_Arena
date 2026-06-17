@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Sector Not Found | BattleGrid</title>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/rtl.css">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-bg);
+            overflow: hidden;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .glitch-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .glitch-text {
+            font-family: var(--font-heading);
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+            text-shadow: 0 0 20px rgba(255,59,59,0.5);
+        }
+
+        @media(max-width: 768px) {
+            .glitch-text { font-size: 3rem; }
+        }
+
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-bg);
+        }
+
+        .glitch-text::before {
+            left: 3px;
+            text-shadow: -2px 0 var(--color-accent);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            left: -3px;
+            text-shadow: -2px 0 var(--color-secondary);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 83px, 0); }
+            20% { clip: rect(47px, 9999px, 14px, 0); }
+            40% { clip: rect(69px, 9999px, 55px, 0); }
+            60% { clip: rect(32px, 9999px, 88px, 0); }
+            80% { clip: rect(93px, 9999px, 12px, 0); }
+            100% { clip: rect(42px, 9999px, 73px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(25px, 9999px, 99px, 0); }
+            20% { clip: rect(11px, 9999px, 44px, 0); }
+            40% { clip: rect(82px, 9999px, 22px, 0); }
+            60% { clip: rect(54px, 9999px, 66px, 0); }
+            80% { clip: rect(77px, 9999px, 33px, 0); }
+            100% { clip: rect(15px, 9999px, 51px, 0); }
+        }
+
+        .terminal-text {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--color-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            display: inline-block;
+            border-right: 2px solid var(--color-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--color-secondary); }
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-container">
+        <div class="glitch-wrapper">
+            <div class="glitch-text" data-text="404 - SECTOR NOT FOUND">404 - SECTOR NOT FOUND</div>
+        </div>
+        
+        <div>
+            <span class="terminal-text">&gt; ERR_CONNECTION_REFUSED... Re-routing to Base Camp.</span>
+        </div>
+
+        <div class="action-buttons fade-in-up" style="animation-delay: 2.5s; animation-fill-mode: backwards;">
+            <a href="index.html" class="btn btn-primary"><i class="ph ph-house"></i> Return Home</a>
+            <a href="dashboard.html" class="btn btn-outline"><i class="ph ph-squares-four"></i> Return to Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Packages | BattleGrid</title>
+    <meta name="description" content="Book group events, corporate team building, and birthday parties at BattleGrid.">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/rtl.css">
+    <!-- GA_TAG: replace with Google Analytics script -->
+    <style>
+        .page-header {
+            padding: 10rem 2rem 6rem;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), var(--color-bg)), url('https://images.unsplash.com/photo-1542562544-59e5bd27bbdc?auto=format&fit=crop&q=80&w=1920') no-repeat center center / cover;
+            position: relative;
+        }
+
+        .page-header h1 {
+            color: var(--color-primary);
+            text-shadow: 0 0 10px rgba(255, 59, 59, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .packages-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        @media(max-width: 768px) {
+            .packages-layout {
+                grid-template-columns: 1fr;
+            }
+            .packages-list {
+                grid-row: 2;
+            }
+            .packages-layout > div:nth-child(2) {
+                grid-row: 1;
+            }
+        }
+
+        .package-item {
+            margin-bottom: 4rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 4rem;
+            text-align: center;
+        }
+
+        .package-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+        }
+
+        .package-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            text-align: center;
+        }
+
+        @media(max-width: 768px) {
+            .package-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .inclusion-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: fit-content;
+            text-align: left;
+        }
+
+        .inclusion-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        /* FAQ Accordion */
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            background: var(--color-surface);
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 1.5rem;
+            max-height: 500px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Custom Form Sidebar */
+        .sidebar-form {
+            background: var(--color-surface);
+            border: 1px solid var(--color-primary);
+            padding: 2rem;
+            position: sticky;
+            top: 100px;
+            border-radius: var(--radius);
+        }
+
+        .cta-banner {
+            background: linear-gradient(45deg, var(--color-surface), rgba(255, 59, 59, 0.1));
+            border: 1px solid var(--color-primary);
+            padding: 4rem 2rem;
+            text-align: center;
+            margin: 4rem 0;
+            border-radius: var(--radius);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">Battle<span>Grid</span></a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="home2.html" class="nav-link">Home 2</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="packages.html" class="nav-link active">Packages</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="book.html" class="nav-link">Book Now</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i></button>
+                <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i
+                        class="ph ph-arrows-left-right"></i></button>
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <button class="hamburger" aria-label="Menu"><i class="ph ph-list"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE DRAWER -->
+    <div class="drawer-overlay"></div>
+    <div class="mobile-drawer">
+        <div class="drawer-header">
+            <button class="drawer-close"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="drawer-menu">
+            <a href="index.html" class="drawer-link">Home</a>
+            <a href="home2.html" class="drawer-link">Home 2</a>
+            <a href="services.html" class="drawer-link">Services</a>
+            <a href="packages.html" class="drawer-link" style="color: var(--color-primary);">Packages</a>
+            <a href="about.html" class="drawer-link">About</a>
+            <a href="blog.html" class="drawer-link">Blog</a>
+            <a href="book.html" class="drawer-link">Book Now</a>
+            <a href="contact.html" class="drawer-link">Contact</a>
+            <a href="dashboard.html" class="drawer-link">Dashboard</a>
+        </div>
+        <a href="login.html" class="btn btn-outline btn-full" style="margin-bottom: 2rem;">Login</a>
+        <div class="drawer-actions">
+            <button class="action-btn theme-toggle" aria-label="Toggle Theme"><i class="ph ph-sun"></i> Theme</button>
+            <button class="action-btn rtl-toggle" aria-label="Toggle RTL"><i class="ph ph-arrows-left-right"></i>
+                RTL</button>
+        </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+        <div class="container fade-in-up">
+            <h1>SQUAD DEPLOYMENTS</h1>
+            <p class="lead">Group events, corporate team building, and party packages.</p>
+        </div>
+    </header>
+
+    <!-- PACKAGES MAIN -->
+    <section class="container fade-in-up" style="margin-top: 4rem;">
+        <div class="packages-layout">
+
+            <div class="packages-list">
+                <!-- Package 1 -->
+                <!-- Package 1 -->
+                <div class="package-item">
+                    <img src="assets/images/pkg-birthday.jpg" alt="Birthday Blitz" class="package-img" loading="lazy">
+                    <h2>Birthday Blitz</h2>
+                    <p class="lead" style="color: var(--color-primary);">From $250 / 10 Players</p>
+                    <div class="package-details">
+                        <div>
+                            <p>The ultimate combat birthday experience. We handle the logistics, you handle the trigger.
+                            </p>
+                            <ul class="inclusion-list">
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> 2 Standard Matches (60m total)
+                                </li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> 45m in Private Base Camp Room
+                                </li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> Dedicated Party Commander</li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> Digital Invitations</li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> Special 'VIP' Vest for Birthday
+                                    Player</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div
+                                style="background: var(--color-surface); padding: 1.5rem; border: 1px solid var(--color-border); margin-bottom: 1.5rem;">
+                                <strong>Capacity:</strong> 10-20 Players<br>
+                                <strong>Additional Players:</strong> $20/ea<br>
+                                <strong>Food Add-on:</strong> Available at checkout
+                            </div>
+                            <a href="book.html" class="btn btn-primary btn-full">Book This Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package 2 -->
+                <div class="package-item">
+                    <img src="assets/images/pkg-corporate.jpg" alt="Corporate Assault" class="package-img"
+                        loading="lazy">
+                    <h2>Corporate Assault</h2>
+                    <p class="lead" style="color: var(--color-primary);">From $450 / 20 Players</p>
+                    <div class="package-details">
+                        <div>
+                            <p>Team building that actually builds teams. High stakes, objective-based combat designed
+                                for corporate groups.</p>
+                            <ul class="inclusion-list">
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> Full Arena Lockout (Private)
+                                </li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> 3 Custom Matches (90m total)
+                                </li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> Detailed Post-Match Analytics
+                                </li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> Tactical Briefing Room Access
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div
+                                style="background: var(--color-surface); padding: 1.5rem; border: 1px solid var(--color-border); margin-bottom: 1.5rem;">
+                                <strong>Capacity:</strong> 20-40 Players<br>
+                                <strong>Additional Players:</strong> $25/ea<br>
+                                <strong>Catering:</strong> Available upon request
+                            </div>
+                            <a href="book.html" class="btn btn-primary btn-full">Book This Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package 3 -->
+                <div class="package-item">
+                    <img src="assets/images/pkg-school.jpg" alt="School Squad" class="package-img" loading="lazy">
+                    <h2>School Squad</h2>
+                    <p class="lead" style="color: var(--color-primary);">From $350 / 30 Players</p>
+                    <div class="package-details">
+                        <div>
+                            <p>Discounted daytime rates for school trips, youth groups, and sports teams.</p>
+                            <ul class="inclusion-list">
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> 2 Standard Matches</li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> Exclusive use of arena during
+                                    playtime</li>
+                                <li><i class="ph-fill ph-check-circle text-primary"></i> 1 Free Chaperone per 10 kids
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div
+                                style="background: var(--color-surface); padding: 1.5rem; border: 1px solid var(--color-border); margin-bottom: 1.5rem;">
+                                <strong>Capacity:</strong> Up to 60 Players<br>
+                                <strong>Timing:</strong> Weekdays Before 4PM<br>
+                            </div>
+                            <a href="book.html" class="btn btn-primary btn-full">Book This Package</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ SECTION -->
+                <div class="faq-section" style="margin-top: 6rem;">
+                    <h3 style="margin-bottom: 2rem;"><i class="ph ph-question"></i> FREQUENTLY ASKED QUESTIONS</h3>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Do I need to pay a deposit? <i class="ph ph-caret-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, a 50% non-refundable deposit is required at the time of booking to secure your time
+                                slot and arena sector.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Can we bring our own food? <i class="ph ph-caret-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>For Birthday Blitz packages, you may bring your own cake. All other outside food and
+                                drink is prohibited unless specifically authorized in a Corporate Assault package.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What if more players show up? <i class="ph ph-caret-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Additional players can be added on the day of the event up to the maximum capacity of
+                                your package. They will be charged at the standard "Additional Player" rate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR FORM -->
+            <div>
+                <div class="sidebar-form">
+                    <h3 style="color: var(--color-primary); margin-bottom: 1rem;">NEED A CUSTOM PACKAGE?</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 2rem;">Fill out this form and our events coordinator
+                        will contact you within 24 hours.</p>
+
+                    <!-- Formspree placeholder action -->
+                    <form action="https://formspree.io/f/placeholder" method="POST" data-validate="true">
+                        <div class="form-group">
+                            <label class="form-label">Name <span class="required">*</span></label>
+                            <input type="text" name="name" class="form-control" required>
+                            <div class="error-msg">Name is required</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email <span class="required">*</span></label>
+                            <input type="email" name="email" class="form-control" required>
+                            <div class="error-msg">Valid email is required</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estimated Group Size</label>
+                            <select name="group_size" class="form-control">
+                                <option value="10-20">10 - 20</option>
+                                <option value="21-40">21 - 40</option>
+                                <option value="41-60">41 - 60</option>
+                                <option value="60+">60+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mission Requirements</label>
+                            <textarea name="message" class="form-control" rows="4"
+                                placeholder="Tell us about your event..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-outline btn-full">Request Quote</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="container fade-in-up" style="padding-bottom: 4rem;">
+        <div class="cta-banner">
+            <h2>BOOK YOUR EVENT NOW</h2>
+            <p
+                style="font-family: var(--font-heading); color: var(--color-secondary); letter-spacing: 0.1em; margin-bottom: 2rem;">
+                SECURE YOUR DROP ZONE TODAY.</p>
+            <a href="book.html" class="btn btn-primary">Proceed to Booking</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="nav-logo"
+                        style="display: block; margin-bottom: 1rem;">Battle<span>Grid</span></a>
+                    <p style="font-size: 0.9rem;">ENTER AT YOUR OWN RISK. The ultimate tactical laser tag experience.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="home2.html">Home Alternate</a>
+                        <a href="about.html">About</a>
+                        <a href="services.html">Services</a>
+                        <a href="blog.html">Transmission Log</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Missions</h4>
+                    <div class="footer-links">
+                        <a href="book.html">Deploy Now</a>
+                        <a href="packages.html">Group Packages</a>
+                        <a href="contact.html">Contact Base</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Comms</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 1rem;">
+                        <i class="ph ph-map-pin text-primary"></i> Sector 7G, Neo-City<br>
+                        <i class="ph ph-phone text-primary"></i> 555-0199-TACT<br>
+                        <i class="ph ph-envelope text-primary"></i> basecamp@battlegrid.com
+                    </p>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2025 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // FAQ Accordion Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    // Close all others
+                    faqItems.forEach(i => i.classList.remove('active'));
+                    // Open clicked
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | BattleGrid</title>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/rtl.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), var(--color-bg)), url('https://images.unsplash.com/photo-1542562544-59e5bd27bbdc?auto=format&fit=crop&q=80&w=1920') no-repeat center center / cover;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .cs-container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--color-primary);
+            padding: 4rem 2rem;
+            border-radius: var(--radius);
+        }
+
+        .cs-title {
+            font-size: 3.5rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px rgba(255,59,59,0.5);
+        }
+        @media(max-width: 768px) {
+            .cs-title { font-size: 2.5rem; }
+        }
+
+        .cs-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-muted);
+            margin-bottom: 3rem;
+            font-family: var(--font-heading);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Countdown */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+        .cd-box {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: 1.5rem;
+            min-width: 120px;
+            border-radius: var(--radius);
+        }
+        .cd-val {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--color-text);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .cd-label {
+            font-size: 0.85rem;
+            color: var(--color-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Form */
+        .notify-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto 3rem;
+            gap: 0.5rem;
+        }
+        @media(max-width: 500px) {
+            .notify-form { flex-direction: column; }
+        }
+        .notify-input {
+            flex-grow: 1;
+            padding: 1rem 1.5rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            border-radius: var(--radius);
+        }
+        .notify-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .social-strip {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .social-strip a {
+            color: var(--color-text-muted);
+            font-size: 2rem;
+            transition: var(--transition);
+        }
+        .social-strip a:hover {
+            color: var(--color-primary);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cs-container fade-in-up">
+        
+        <h1 class="cs-title">NEW ARENA EXPANSION</h1>
+        <p class="cs-subtitle">Sector 5 is currently under construction. Deploying in:</p>
+
+        <div class="countdown" id="countdown">
+            <div class="cd-box">
+                <div class="cd-val" id="cd-days">00</div>
+                <div class="cd-label">Days</div>
+            </div>
+            <div class="cd-box">
+                <div class="cd-val" id="cd-hours">00</div>
+                <div class="cd-label">Hours</div>
+            </div>
+            <div class="cd-box">
+                <div class="cd-val" id="cd-mins">00</div>
+                <div class="cd-label">Minutes</div>
+            </div>
+            <div class="cd-box">
+                <div class="cd-val" id="cd-secs">00</div>
+                <div class="cd-label">Seconds</div>
+            </div>
+        </div>
+
+        <form class="notify-form" action="https://formspree.io/f/placeholder" method="POST">
+            <input type="email" class="notify-input" placeholder="Enter your comms email..." required>
+            <button type="submit" class="btn btn-primary">NOTIFY ME</button>
+        </form>
+
+        <div class="social-strip">
+            <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
+            <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
+            <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
+        </div>
+        
+        <div style="margin-top: 3rem;">
+            <a href="index.html" class="text-secondary" style="font-family: var(--font-heading); text-transform: uppercase;">&larr; Return to Base Camp</a>
+        </div>
+
+    </div>
+
+    <script>
+        // Fake target date: 45 days from now
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 45);
+        targetDate.setHours(14, 0, 0, 0);
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate.getTime() - now;
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<h2 style="color:var(--color-secondary);">DEPLOYMENT INITIATED</h2>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+            document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+            document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
