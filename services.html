@@ -50,9 +50,11 @@
                 grid-template-columns: 1fr;
                 direction: ltr !important;
             }
+
             .service-card .service-content {
                 grid-row: 1;
             }
+
             .service-card .service-img {
                 grid-row: 2;
             }
@@ -83,13 +85,30 @@
 
         .meta-badge {
             padding: 0.25rem 0.75rem;
-            border: 1px solid var(--color-border);
+            border: 1px solid var(--color-text-muted);
+            color: var(--color-text);
             font-size: 0.85rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-family: var(--font-heading);
             text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        [data-theme="dark"] .meta-badge {
+            border-color: var(--color-border);
+        }
+
+        .meta-badge.badge-primary {
+            color: #B30000;
+            border-color: #B30000;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .meta-badge.badge-primary {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
         }
 
         /* Arena Tech */
@@ -104,6 +123,7 @@
             .tech-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
             .tech-grid .tech-item:nth-child(3) {
                 grid-column: span 2;
                 width: calc(50% - 1rem);
@@ -115,6 +135,7 @@
             .tech-grid {
                 grid-template-columns: 1fr;
             }
+
             .tech-grid .tech-item:nth-child(3) {
                 grid-column: auto;
                 width: 100%;
@@ -211,6 +232,15 @@
             margin: 4rem 0;
             border-radius: var(--radius);
         }
+
+        .cta-sub-text {
+            color: #B30000;
+            font-weight: 600;
+        }
+
+        [data-theme="dark"] .cta-sub-text {
+            color: var(--color-primary);
+        }
     </style>
 </head>
 
@@ -286,8 +316,7 @@
                     <div class="service-meta">
                         <span class="meta-badge"><i class="ph ph-clock"></i> 30 Min</span>
                         <span class="meta-badge"><i class="ph ph-users"></i> Up to 64 Players</span>
-                        <span class="meta-badge"
-                            style="color: var(--color-secondary); border-color: var(--color-secondary);">Beginner</span>
+                        <span class="meta-badge badge-primary">Beginner</span>
                     </div>
                     <p>The classic free-for-all or simple team based format. Perfect for drop-ins, first timers, and
                         general chaos. Rack up the highest individual score to claim the top spot on the session
@@ -304,8 +333,7 @@
                     <div class="service-meta">
                         <span class="meta-badge"><i class="ph ph-clock"></i> 45 Min</span>
                         <span class="meta-badge"><i class="ph ph-users"></i> 8v8 or 16v16</span>
-                        <span class="meta-badge"
-                            style="color: var(--color-primary); border-color: var(--color-primary);">Advanced</span>
+                        <span class="meta-badge badge-primary">Advanced</span>
                     </div>
                     <p>Tactical squad-based gameplay. Communication is key. Features respawn timers, base capturing, and
                         objective holding. Recommended for returning players and organized groups.</p>
@@ -321,8 +349,7 @@
                     <div class="service-meta">
                         <span class="meta-badge"><i class="ph ph-clock"></i> 60 Min</span>
                         <span class="meta-badge"><i class="ph ph-users"></i> Up to 20 Players</span>
-                        <span class="meta-badge"
-                            style="color: var(--color-accent); border-color: var(--color-accent);">Private</span>
+                        <span class="meta-badge badge-primary">Private</span>
                     </div>
                     <p>Secure an entire arena sector for your private group. Includes a dedicated referee and access to
                         custom game modes not available in public sessions.</p>
@@ -338,7 +365,7 @@
                     <div class="service-meta">
                         <span class="meta-badge"><i class="ph ph-clock"></i> 45 Min</span>
                         <span class="meta-badge"><i class="ph ph-users"></i> Up to 32 Players</span>
-                        <span class="meta-badge" style="color: #ff00ff; border-color: #ff00ff;">Hardcore</span>
+                        <span class="meta-badge badge-primary">Hardcore</span>
                     </div>
                     <p>Extreme low-light operations. Arena lighting drops to 10%. Lasers and vest LEDs are your only
                         light sources. High tension, high reward.</p>
@@ -414,8 +441,8 @@
     <section class="container fade-in-up" style="padding-bottom: 4rem;">
         <div class="cta-banner">
             <h2>READY TO DEPLOY?</h2>
-            <p
-                style="font-family: var(--font-heading); color: var(--color-secondary); letter-spacing: 0.1em; margin-bottom: 2rem;">
+            <p class="cta-sub-text"
+                style="font-family: var(--font-heading); letter-spacing: 0.1em; margin-bottom: 2rem;">
                 CHOOSE YOUR LOADOUT AND SECURE YOUR SECTOR.</p>
             <a href="book.html" class="btn btn-primary">Book Now</a>
         </div>
@@ -456,7 +483,7 @@
                         <i class="ph ph-phone text-primary"></i> 555-0199-TACT<br>
                         <i class="ph ph-envelope text-primary"></i> basecamp@battlegrid.com
                     </p>
-                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                    <div class="footer-socials">
                         <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
                         <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
                         <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
@@ -464,7 +491,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                &copy; 2025 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
+                &copy; 2026 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
             </div>
         </div>
     </footer>

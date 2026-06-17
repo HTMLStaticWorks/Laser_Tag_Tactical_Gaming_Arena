@@ -564,6 +564,24 @@ section {
   color: var(--color-primary);
 }
 
+.footer-socials {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.5rem;
+}
+
+.footer-socials a {
+  color: var(--color-text);
+  transition: var(--transition);
+  display: inline-flex;
+}
+
+.footer-socials a:hover {
+  color: var(--color-primary);
+  transform: translateY(-3px);
+  filter: drop-shadow(0 0 4px var(--color-primary));
+}
+
 .footer-bottom {
   border-top: 1px solid var(--color-border);
   padding-top: 2rem;
@@ -580,6 +598,9 @@ section {
   .footer-grid { 
     grid-template-columns: 1fr; 
     text-align: center;
+  }
+  .footer-socials {
+    justify-content: center;
   }
 }
 
@@ -641,4 +662,77 @@ section {
   font-family: var(--font-heading);
   font-size: var(--size-rank);
   font-weight: var(--weight-rank);
+}
+
+/* Dashboard Link Hover Effect */
+.dashboard-link {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  position: relative;
+}
+
+.dashboard-link:hover {
+  color: var(--color-secondary);
+  text-shadow: 0 0 8px var(--color-secondary);
+}
+
+.dashboard-link .arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.dashboard-link:hover .arrow {
+  transform: translateX(6px);
+}
+
+/* Back to Top Button */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 999;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0;
+  visibility: hidden;
+  box-shadow: 0 0 10px rgba(255, 59, 59, 0.1);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-5px);
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+  }
 }

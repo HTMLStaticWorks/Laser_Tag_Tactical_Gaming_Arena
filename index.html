@@ -214,6 +214,68 @@
             margin: 4rem 0;
             border-radius: var(--radius);
         }
+
+        /* How It Works — Image Cards */
+        .step-img-card {
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .step-img-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .step-img-wrapper {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .step-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .step-img-card:hover .step-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .step-img-wrapper .step-number {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            margin: 0;
+            z-index: 10;
+            background: var(--color-primary);
+            border: none;
+            color: #fff;
+            font-size: 1.25rem;
+            width: 44px;
+            height: 44px;
+        }
+
+        .step-img-body {
+            padding: 1.5rem;
+        }
+
+        .step-img-body h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .step-img-body p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
     </style>
     <!-- JSON-LD Placeholder -->
     <script type="application/ld+json">
@@ -340,9 +402,7 @@
         </div>
     </section>
     <div class="text-center" style="background: var(--color-surface); padding-bottom: 1rem;">
-        <a href="dashboard.html" class="text-primary"
-            style="font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">Full Stats in your Dashboard
-            →</a>
+        <a href="dashboard.html" class="dashboard-link">Full Stats in your Dashboard <span class="arrow">→</span></a>
     </div>
 
     <!-- EXPERIENCES TEASER -->
@@ -491,29 +551,50 @@
 
     <!-- HOW IT WORKS -->
     <section class="container fade-in-up"
-        style="background-color: var(--color-surface); padding: 4rem 2rem; border-radius: var(--radius);">
+        style="background-color: var(--color-surface); padding: 4rem 2rem; border-radius: var(--radius); margin-top: 4rem; margin-bottom: 4rem;">
         <div class="section-header" style="margin-bottom: 3rem;">
             <h2>HOW IT WORKS</h2>
         </div>
         <div class="step-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-            <div>
-                <div class="step-number">1</div>
-                <h4 style="font-size: 1.25rem;"><i class="ph ph-calendar-check"></i> Book Online</h4>
-                <p style="font-size: 0.9rem;">Secure your drop zone instantly.</p>
+
+            <!-- Step 1 -->
+            <div class="step-img-card">
+                <div class="step-img-wrapper">
+                    <img src="assets/images/step-book.jpg" alt="Book Online" loading="lazy">
+                    <div class="step-number">1</div>
+                </div>
+                <div class="step-img-body">
+                    <h4><i class="ph ph-calendar-check"></i> Book Online</h4>
+                    <p>Secure your drop zone instantly.</p>
+                </div>
             </div>
-            <div>
-                <div class="step-number">2</div>
-                <h4 style="font-size: 1.25rem;"><i class="ph ph-pen-nib"></i> Sign Waiver</h4>
-                <p style="font-size: 0.9rem;">Complete digital briefing in dashboard.</p>
+
+            <!-- Step 2 -->
+            <div class="step-img-card">
+                <div class="step-img-wrapper">
+                    <img src="assets/images/step-waiver.jpg" alt="Sign Waiver" loading="lazy">
+                    <div class="step-number">2</div>
+                </div>
+                <div class="step-img-body">
+                    <h4><i class="ph ph-pen-nib"></i> Sign Waiver</h4>
+                    <p>Complete digital briefing in dashboard.</p>
+                </div>
             </div>
-            <div>
-                <div class="step-number">3</div>
-                <h4 style="font-size: 1.25rem;"><i class="ph ph-crosshair"></i> Gear Up & Battle</h4>
-                <p style="font-size: 0.9rem;">Arrive 15 mins early to suit up.</p>
+
+            <!-- Step 3 -->
+            <div class="step-img-card">
+                <div class="step-img-wrapper">
+                    <img src="assets/images/step-gear.jpg" alt="Gear Up & Battle" loading="lazy">
+                    <div class="step-number">3</div>
+                </div>
+                <div class="step-img-body">
+                    <h4><i class="ph ph-crosshair"></i> Gear Up & Battle</h4>
+                    <p>Arrive 15 mins early to suit up.</p>
+                </div>
             </div>
+
         </div>
     </section>
-
     <!-- TESTIMONIALS -->
     <section class="container fade-in-up">
         <div class="section-header">
@@ -627,7 +708,7 @@
                         <i class="ph ph-phone text-primary"></i> 555-0199-TACT<br>
                         <i class="ph ph-envelope text-primary"></i> basecamp@battlegrid.com
                     </p>
-                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                    <div class="footer-socials">
                         <a href="#" aria-label="Instagram"><i class="ph ph-instagram-logo"></i></a>
                         <a href="#" aria-label="Facebook"><i class="ph ph-facebook-logo"></i></a>
                         <a href="#" aria-label="TikTok"><i class="ph ph-tiktok-logo"></i></a>
@@ -635,7 +716,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                &copy; 2025 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
+                &copy; 2026 BattleGrid. All Rights Reserved. ENTER AT YOUR OWN RISK.
             </div>
         </div>
     </footer>
