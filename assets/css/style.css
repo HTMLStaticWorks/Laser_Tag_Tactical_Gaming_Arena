@@ -590,6 +590,24 @@ section {
   color: var(--color-text-muted);
 }
 
+.footer-legal {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.footer-legal a {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.footer-legal a:hover {
+  color: var(--color-primary);
+}
+
 @media (max-width: 1024px) {
   .footer-grid { grid-template-columns: repeat(2, 1fr); }
 }
